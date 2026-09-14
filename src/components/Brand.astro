@@ -1,0 +1,5 @@
+---
+import { site } from '../data/site';
+interface Props { class?: string; }
+---
+<span class:list={['brand-wordmark', Astro.props.class]} aria-label={site.name}><span class="brand-prefix">Bernardo</span><span>Tecnoglass</span></span>

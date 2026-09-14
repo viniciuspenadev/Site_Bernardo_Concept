@@ -1,0 +1,23 @@
+---
+import Brand from './Brand.astro';
+import { site, navigation } from '../data/site';
+---
+<footer class="bg-primary-900 text-primary-100 py-16 border-t border-primary-800">
+  <div class="container mx-auto px-4 lg:px-12">
+    <div class="flex flex-col md:flex-row justify-between gap-12 mb-16">
+      <div class="max-w-sm"><a href="#inicio" aria-label="Bernardo Tecnoglass — início" class="text-white inline-block mb-6"><Brand /></a><p class="text-sm leading-relaxed">{site.description}</p></div>
+      <nav aria-label="Navegação do rodapé"><h2 class="text-white font-serif text-lg mb-5">Explore</h2><ul class="space-y-3 text-sm">{navigation.map(link => <li><a href={link.href} class="hover:text-white">{link.label}</a></li>)}</ul></nav>
+      {(site.email || site.whatsapp || site.address || site.socialLinks.length > 0) && <div><h2 class="text-white font-serif text-lg mb-5">Atendimento</h2><ul class="space-y-3 text-sm">
+        {site.whatsapp && <li><a href={`https://wa.me/${site.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>}
+        {site.email && <li><a href={`mailto:${site.email}`}>{site.email}</a></li>}
+        {site.address && <li>{site.address}</li>}
+        {site.socialLinks.map(link => <li><a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a></li>)}
+      </ul></div>}
+    </div>
+    <div class="border-t border-primary-800 pt-8 flex flex-col md:flex-row justify-between gap-4 text-xs tracking-wider">
+      <p>© {new Date().getFullYear()} {site.name}.</p>
+      <a href="https://www.bluedigitalhub.com.br" target="_blank" rel="noopener noreferrer" class="text-white">BlueDigitalHub</a>
+    </div>
+  </div>
+</footer>
+

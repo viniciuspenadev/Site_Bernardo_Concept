@@ -1,0 +1,16 @@
+---
+import type { Project } from '../data/projects';
+import Photo from './Photo.astro';
+interface Props { project: Project; }
+const { project } = Astro.props;
+---
+<article class="group relative flex flex-col w-full aspect-[3/4] min-h-[420px] md:min-h-0 bg-primary-900 rounded-3xl overflow-hidden shadow-soft">
+  <Photo src={project.image} alt={project.alt} class="carousel-photo absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(min-width: 768px) 400px, 320px" />
+  <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/10 to-black/10"></div>
+  <span class="absolute top-5 left-5 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-black/30 text-white backdrop-blur-md border border-white/20">{project.category}</span>
+  <div class="relative mt-auto p-6 md:p-8">
+    <h3 class="text-2xl md:text-3xl font-serif text-white mb-3 leading-tight">{project.title}</h3>
+    <p class="text-xs md:text-sm text-stone-200 leading-relaxed font-light">{project.description}</p>
+    {(project.illustrative || project.imageNote) && <p class="mt-3 text-[10px] tracking-wider uppercase text-stone-300">{project.illustrative ? 'Imagem ilustrativa' : project.imageNote}</p>}
+  </div>
+</article>

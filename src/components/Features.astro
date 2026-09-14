@@ -1,0 +1,31 @@
+---
+import { features } from '../data/content';
+import { media } from '../data/media';
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+---
+<section id="diferenciais" class="py-16 lg:py-24 bg-white overflow-hidden scroll-mt-24">
+  <div class="container mx-auto px-4 lg:px-12">
+    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+      <div class="lg:w-1/2 w-full relative order-2 lg:order-1">
+        <Photo src={media.facade.src} alt={media.facade.alt} class="about-photo" />
+        <div class="absolute -bottom-6 right-2 lg:-right-8 lg:bottom-10 bg-white/90 backdrop-blur-md border border-white p-6 max-w-[280px] rounded-2xl shadow-xl">
+          <p class="text-primary-900 font-serif text-xl italic leading-snug">Transparência, linhas e novas conexões.</p>
+          <p class="mt-4 text-primary-700 text-[10px] uppercase tracking-widest font-bold">Bernardo Tecnoglass</p>
+        </div>
+      </div>
+      <div class="lg:w-1/2 order-1 lg:order-2 lg:pl-10">
+        <p class="text-secondary-500 font-bold tracking-[0.2em] text-xs uppercase mb-3">Conheça a Bernardo Tecnoglass</p>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-serif text-primary-900 mb-6 leading-tight">Bernardo Tecnoglass:<br /><span class="text-secondary-500 italic">vidros e esquadrias.</span></h2>
+        <p class="text-sm md:text-base text-secondary-600 mb-8 font-light leading-relaxed max-w-lg">A Bernardo Tecnoglass atende a Grande São Paulo com vidros, esquadrias, portas e portões. Da pele de vidro em fachadas ao box para banheiro, reunimos soluções para integrar ambientes, compor aberturas e aproveitar as sacadas.</p>
+        <div class="flex flex-col gap-5">
+          {features.map(feature => <div class="flex items-start gap-4 lg:gap-5 border-b border-secondary-100 last:border-0 pb-5">
+            <div class="w-12 h-12 shrink-0 flex items-center justify-center rounded-full bg-primary-50 text-primary-900"><Icon name={feature.icon} /></div>
+            <div><h3 class="text-lg font-serif font-semibold text-primary-900 mb-2">{feature.title}</h3><p class="text-sm text-secondary-500 leading-relaxed font-light">{feature.description}</p></div>
+          </div>)}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

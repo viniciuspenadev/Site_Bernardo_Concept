@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+import HeroPhoto from './HeroPhoto.astro';
+import { heroSlides } from '../data/content';
+---
+<section id="inicio" aria-label="Destaques Bernardo Tecnoglass" aria-roledescription="carrossel" class="hero hero-fullbleed relative w-full overflow-hidden bg-stone-900">
+  {heroSlides.map((slide,index) => (
+    <div data-slide data-active={index === 0 ? 'true' : 'false'} role="group" aria-roledescription="slide" aria-label={`${index + 1} de ${heroSlides.length}`} aria-hidden={index !== 0} inert={index !== 0} class="hero-slide absolute inset-0">
+      <HeroPhoto desktop={slide.heroDesktop} mobile={slide.heroMobile} alt={slide.alt} eager={index === 0} />
+      <div class="hero-shade absolute inset-0"></div>
+      <div class="hero-content relative z-20 container mx-auto px-6 lg:px-12 h-full flex items-center">
+        <div class="hero-copy max-w-3xl">
+          <div class="flex items-center gap-4 mb-6"><span class="h-px w-12 bg-primary-300"></span><p class="text-primary-100 font-bold tracking-[0.2em] text-xs uppercase">{slide.eyebrow}</p></div>
+          {index === 0 ? <h1 class="hero-heading font-serif text-white">{slide.title}</h1> : <h2 class="hero-heading font-serif text-white">{slide.title}</h2>}
+          <p class="hero-description text-lg md:text-xl text-stone-100 max-w-lg font-light leading-relaxed mt-6 mb-9 border-l border-white/30 pl-5">{slide.description}</p>
+          <a href={slide.href} class="inline-flex items-center gap-4 text-white text-xs md:text-sm font-bold uppercase tracking-widest group hover:text-primary-200"><span class="border-b-2 border-primary-300 pb-2">{slide.cta}</span><Icon name="arrow" class="w-4 h-4 transition-transform group-hover:translate-x-2" /></a>
+          {'illustrative' in slide && slide.illustrative && <p class="mt-4 text-[10px] uppercase tracking-wider text-stone-200">Imagem ilustrativa</p>}
+        </div>
+      </div>
+    </div>
+  ))}
+  <div class="absolute bottom-28 inset-x-0 z-30 flex items-center justify-center gap-5 text-white">
+    <p class="font-serif text-lg tabular-nums"><span data-slide-number>01</span><span class="text-xs text-white/60"> / 0{heroSlides.length}</span></p>
+    <button type="button" data-slide-prev aria-label="Slide anterior" class="circle-button"><Icon name="left" /></button>
+    <button type="button" data-slide-next aria-label="Próximo slide" class="circle-button"><Icon name="right" /></button>
+    <button type="button" data-slide-pause aria-label="Pausar slides" aria-pressed="false" class="circle-button"><span data-pause-icon><Icon name="pause" /></span><span data-play-icon hidden><Icon name="play" /></span></button>
+  </div>
+  <div class="absolute bottom-0 inset-x-0 h-1 z-30 bg-white/10"><div data-slide-progress class="h-full bg-primary-400 origin-left"></div></div>
+</section>
+<script src="../scripts/hero.ts"></script>
+

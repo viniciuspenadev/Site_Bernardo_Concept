@@ -1,0 +1,53 @@
+---
+import { serviceGroups } from '../data/content';
+import { servicePhotos } from '../data/service-photos';
+import Photo from './Photo.astro';
+---
+<section id="servicos" class="bg-white scroll-mt-24" aria-label="Soluções Bernardo Tecnoglass">
+  <div class="lg:hidden container mx-auto px-4 py-20">
+    <div class="mb-16"><p class="text-primary-600 font-bold tracking-[0.2em] text-xs uppercase mb-4">Soluções Bernardo Tecnoglass</p><h2 class="text-4xl sm:text-5xl leading-tight tracking-tight">Esquadrias, vidros<br /><span class="font-serif text-primary-800 italic">e portões.</span></h2></div>
+    <div class="flex flex-col gap-16">
+      {serviceGroups.map(group => <article id={`solucao-${group.id}-mobile`} class="scroll-mt-28">
+        <figure class="relative mb-8 overflow-hidden rounded-2xl bg-secondary-900">
+          <Photo src={servicePhotos[group.id].src} alt={servicePhotos[group.id].alt} class="h-[50vh] min-h-[320px] w-full object-cover" sizes="(min-width: 1024px) 50vw, calc(100vw - 32px)" style={`object-position: ${servicePhotos[group.id].position}`} />
+          <figcaption class="absolute bottom-0 inset-x-0 px-5 pb-4 pt-10 bg-gradient-to-t from-black/60 to-transparent text-white text-[10px] uppercase tracking-wider">{servicePhotos[group.id].caption}</figcaption>
+        </figure>
+        <div class="flex items-baseline gap-4 mb-4"><span class="font-serif text-3xl text-primary-600">{group.number}.</span><h3 class="text-2xl sm:text-3xl font-medium text-primary-900">{group.title}</h3></div>
+        <p class="text-secondary-600 font-light text-lg leading-relaxed mb-6">{group.description}</p>
+        <ul class="space-y-3">{group.items.map(item => <li class="text-sm text-secondary-600 border-b border-secondary-100 pb-3">{item}</li>)}</ul>
+      </article>)}
+    </div>
+  </div>
+  <div class="hidden lg:flex w-full relative" data-services-desktop>
+    <div class="w-1/2 h-screen sticky top-0 overflow-hidden bg-secondary-900" aria-hidden="true">
+      {serviceGroups.map((group, index) => <div data-service-image data-service-photo={group.id} data-active={index === 0 ? 'true' : 'false'} class="service-image absolute inset-0">
+        <Photo src={servicePhotos[group.id].src} alt="" class="w-full h-full object-cover" sizes="50vw" style={`object-position: ${servicePhotos[group.id].position}`} />
+        <p class="absolute bottom-0 inset-x-0 px-8 pb-6 pt-14 bg-gradient-to-t from-black/60 to-transparent text-white text-[10px] uppercase tracking-wider">{servicePhotos[group.id].caption}</p>
+      </div>)}
+    </div>
+    <div class="w-1/2 bg-white px-12 xl:px-20">
+      <div class="pt-[25vh] pb-[10vh]"><p class="text-primary-600 font-bold tracking-[0.2em] text-xs uppercase mb-6">Soluções Bernardo Tecnoglass</p><h2 class="text-5xl xl:text-6xl leading-tight tracking-tight">Esquadrias, vidros<br /><span class="font-serif text-primary-800 italic">e portões.</span></h2></div>
+      <div class="pb-[30vh]">
+        {serviceGroups.map((group, index) => <article id={`solucao-${group.id}`} data-service-step={index} data-active={index === 0 ? 'true' : 'false'} class="service-step scroll-mt-28 min-h-[80vh] py-12 flex flex-col justify-center transition-opacity duration-700">
+          <div class="flex items-baseline gap-6 mb-8"><span class="font-serif text-4xl text-primary-600">{group.number}.</span><h3 class="text-4xl xl:text-5xl font-medium text-primary-900">{group.title}</h3></div>
+          <p class="text-secondary-600 font-light text-xl leading-relaxed max-w-lg mb-6">{group.description}</p>
+          <ul class="space-y-3">{group.items.map(item => <li data-service-name class="text-sm text-secondary-600 border-b border-secondary-100 pb-3">{item}</li>)}</ul>
+        </article>)}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  const steps = Array.from(document.querySelectorAll<HTMLElement>('[data-service-step]'));
+  const images = Array.from(document.querySelectorAll<HTMLElement>('[data-service-image]'));
+  const observer = new IntersectionObserver(entries => {
+    const entry = entries.find(item => item.isIntersecting);
+    if (!entry) return;
+    const index = Number((entry.target as HTMLElement).dataset.serviceStep);
+    steps.forEach((step, i) => {step.dataset.active = String(i === index);});
+    images.forEach((image, i) => {image.dataset.active = String(i === index);});
+  }, {rootMargin:'-40% 0px -40% 0px'});
+  steps.forEach(step => observer.observe(step));
+</script>
+
+
