@@ -48,7 +48,11 @@ Esta versão local usa `noindex, nofollow` porque ainda contém material provis�
 
 Para servir pelo XAMPP, apontar um VirtualHost para `dist/` como raiz do site. As URLs de recursos partem de `/`; se publicar dentro de uma subpasta, será necessário configurar `base` e adaptar os caminhos.
 
-## Recuperação
+## Sacada interativa
+
+A seção da sacada usa o vídeo fornecido pelo cliente em tela cheia, com avanço controlado pela rolagem, três mensagens e transição natural para Soluções ao terminar. Há poster estático para movimento reduzido e falhas de carregamento. Detalhes em [docs/SACADA-VIDEO.md](docs/SACADA-VIDEO.md). Execute `node scripts/verify-balcony.mjs` com Node 24 para verificar a timeline. A documentação da primeira proposta em CSS 3D foi preservada em `docs/SACADA-INTERATIVA.md` como histórico.
+
+## Recuperação do projeto original
 
 O projeto Next.js original está preservado na pasta `concept`. A migração foi feita em uma pasta independente, sem alterar suas fontes ou dependências. Para reverter uma publicação futura, restaurar a imagem/configuração da implantação anterior.
 

@@ -12,8 +12,8 @@ import { heroSlides } from '../data/content';
         <div class="hero-copy max-w-3xl">
           <div class="flex items-center gap-4 mb-6"><span class="h-px w-12 bg-primary-300"></span><p class="text-primary-100 font-bold tracking-[0.2em] text-xs uppercase">{slide.eyebrow}</p></div>
           {index === 0 ? <h1 class="hero-heading font-serif text-white">{slide.title}</h1> : <h2 class="hero-heading font-serif text-white">{slide.title}</h2>}
-          <p class="hero-description text-lg md:text-xl text-stone-100 max-w-lg font-light leading-relaxed mt-6 mb-9 border-l border-white/30 pl-5">{slide.description}</p>
-          <a href={slide.href} class="inline-flex items-center gap-4 text-white text-xs md:text-sm font-bold uppercase tracking-widest group hover:text-primary-200"><span class="border-b-2 border-primary-300 pb-2">{slide.cta}</span><Icon name="arrow" class="w-4 h-4 transition-transform group-hover:translate-x-2" /></a>
+          <p class="hero-description text-lg text-stone-100 max-w-lg font-light leading-relaxed mt-6 mb-9">{slide.description}</p>
+          <a href={slide.href} class="inline-flex items-center gap-4 text-white text-xs font-bold uppercase tracking-widest group hover:text-primary-200"><span class="border-b-2 border-primary-300 pb-2">{slide.cta}</span><Icon name="arrow" class="w-4 h-4 transition-transform group-hover:translate-x-2" /></a>
           {'illustrative' in slide && slide.illustrative && <p class="mt-4 text-[10px] uppercase tracking-wider text-stone-200">Imagem ilustrativa</p>}
         </div>
       </div>

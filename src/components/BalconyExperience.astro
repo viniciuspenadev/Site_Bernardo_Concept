@@ -1,0 +1,21 @@
+---
+import Photo from './Photo.astro';
+import balcony from '../assets/tecnoglass/interactive/sacada-aberta-v1.png';
+---
+<div class="balcony-demo" data-balcony-demo>
+  <div class="balcony-intro"><span>Uma sacada. Novas possibilidades.</span><span data-balcony-state>Fechada</span></div>
+  <div class="balcony-stage" role="img" aria-label="Demonstração ilustrativa de uma sacada com seis painéis de vidro que se recolhem na lateral" data-balcony-stage>
+    <Photo src={balcony} alt="" class="balcony-backdrop" sizes="(min-width: 1024px) 540px, (min-width: 640px) 480px, calc(100vw - 32px)" />
+    <div class="balcony-glazing" aria-hidden="true" data-balcony-glazing>
+      {Array.from({length: 6}, (_, index) => <div class="balcony-pane" data-balcony-pane style={`left:${index * 100 / 6}%;z-index:${12 - index}`}><span class="balcony-glint"></span><span class="balcony-fitting top"></span><span class="balcony-fitting bottom"></span></div>)}
+    </div>
+    <span class="balcony-note">Demonstração ilustrativa</span>
+  </div>
+  <div class="balcony-controls" data-balcony-controls hidden>
+    <div class="balcony-control-heading"><label for="balcony-opening">Abertura da sacada</label><output for="balcony-opening" data-balcony-percent>0%</output></div>
+    <input id="balcony-opening" type="range" min="0" max="100" value="0" step="1" aria-describedby="balcony-help" />
+    <div class="balcony-control-footer"><p id="balcony-help" data-balcony-help>Role a página ou arraste o controle.</p><button type="button" data-balcony-toggle aria-pressed="false">Abrir sacada <span aria-hidden="true">↗</span></button></div>
+  </div>
+  <noscript><p class="balcony-noscript">Envidraçamento de sacadas: integração e transparência para os ambientes.</p></noscript>
+</div>
+<script src="../scripts/balcony.ts"></script>

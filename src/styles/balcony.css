@@ -1,0 +1,27 @@
+.balcony-story { position: relative; background: #182624; color: white; scroll-margin-top: 0; }
+.balcony-story[data-enhanced='true'] { height: 400svh; }
+.balcony-screen { position: sticky; top: 0; width: 100%; height: 100svh; min-height: 480px; overflow: hidden; isolation: isolate; }
+.balcony-film, .balcony-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.balcony-film { object-fit: cover; object-position: center; }
+.balcony-shade { background: linear-gradient(180deg,rgb(5 20 25 / .28),rgb(5 20 25 / .04) 35%,rgb(5 20 25 / .3) 72%,rgb(5 20 25 / .62)); }
+.balcony-message { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 140px 32px 100px; text-align: center; opacity: 0; pointer-events: none; text-shadow: 0 2px 30px rgb(0 0 0 / .65); }
+[data-balcony-message='0'] { opacity: 1; }
+.balcony-message h2, .balcony-message h3, .balcony-headline { font-family: var(--font-serif); font-weight: 400; font-size: clamp(42px,5.8vw,88px); line-height: 1.1; letter-spacing: -.045em; max-width: 1050px; text-wrap: balance; }
+.balcony-message em { display: block; font-weight: 400; }
+.balcony-message > p:not(.balcony-headline) { font-size: clamp(12px,1.15vw,16px); line-height: 1.7; margin-top: 26px; max-width: 420px; }
+.balcony-message .balcony-instruction { letter-spacing: .04em; }
+.balcony-cta { display: inline-flex; align-items: center; gap: 24px; min-height: 48px; padding: 12px 24px; margin-top: 24px; border: 1px solid rgb(255 255 255 / .55); border-radius: 999px; font-size: 12px; background: rgb(5 20 25 / .2); backdrop-filter: blur(8px); text-shadow: none; }
+.balcony-message[aria-hidden='false'] { pointer-events: auto; }
+.balcony-cta:hover { background: white; color: #0a3560; }
+.balcony-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: rgb(255 255 255 / .16); }
+.balcony-progress span { display: block; height: 100%; background: white; transform: scaleX(0); transform-origin: left; }
+@media (max-width: 767px) {
+  .balcony-story[data-enhanced='true'] { height: 360svh; }
+  .balcony-message { padding: 140px 24px 108px; }
+  .balcony-message h2, .balcony-message h3, .balcony-headline { font-size: clamp(38px,10.5vw,64px); }
+  .balcony-message > p:not(.balcony-headline) { max-width: 270px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .balcony-story[data-enhanced='true'] { height: auto; }
+  .balcony-screen { position: relative; }
+}
