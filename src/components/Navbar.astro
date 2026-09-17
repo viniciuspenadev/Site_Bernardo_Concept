@@ -1,18 +1,26 @@
 ---
 import Brand from './Brand.astro';
 import Icon from './Icon.astro';
-import { navigation, site } from '../data/site';
+import { navigation, site, telHref } from '../data/site';
+
+// Fora da home as ancoras precisam apontar para a home antes do fragmento.
+const prefix = Astro.url.pathname === '/' ? '' : '/';
+const links = navigation.map(link => ({ ...link, href: `${prefix}${link.href}` }));
 ---
 <header id="site-header" class="site-header fixed top-0 inset-x-0 z-50 transition-all duration-300 border-b border-white/10 py-6 text-white">
   <div class="container mx-auto px-6 lg:px-12 flex items-center justify-between gap-6">
     <nav aria-label="Navegação principal" class="hidden lg:flex items-center gap-2 flex-1">
-      {navigation.slice(0, 2).map(link => <a class="nav-link" href={link.href}>{link.label}</a>)}
+      {links.slice(0, 2).map(link => <a class="nav-link" href={link.href}>{link.label}</a>)}
     </nav>
-    <a href="#inicio" aria-label={`${site.name} — início`} class="shrink-0"><Brand /></a>
+    <a href={`${prefix}#inicio`} aria-label={`${site.name} — início`} class="shrink-0"><Brand /></a>
     <nav aria-label="Navegação complementar" class="hidden lg:flex items-center justify-end gap-2 flex-1">
-      {navigation.slice(2).map(link => <a class="nav-link" href={link.href}>{link.label}</a>)}
+      {links.slice(2).map(link => <a class="nav-link" href={link.href}>{link.label}</a>)}
+      <a class="header-phone" href={telHref} aria-label={`Ligar para a ${site.name}: ${site.phoneDisplay}`}><Icon name="phone" class="w-4 h-4" />{site.phoneDisplay}</a>
     </nav>
-    <button id="menu-open" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" class="lg:hidden p-3 -mr-3 rounded-full hover:bg-white/10"><Icon name="menu" class="w-6 h-6" /></button>
+    <div class="flex lg:hidden items-center gap-1">
+      <a class="p-3 rounded-full hover:bg-white/10" href={telHref} aria-label={`Ligar para a ${site.name}: ${site.phoneDisplay}`}><Icon name="phone" class="w-6 h-6" /></a>
+      <button id="menu-open" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" class="p-3 -mr-3 rounded-full hover:bg-white/10"><Icon name="menu" class="w-6 h-6" /></button>
+    </div>
   </div>
 </header>
 <dialog id="mobile-menu" aria-label="Menu de navegação" class="mobile-menu">
@@ -21,8 +29,9 @@ import { navigation, site } from '../data/site';
     <button id="menu-close" type="button" aria-label="Fechar menu" class="p-3 -mr-3 rounded-full hover:bg-primary-50"><Icon name="close" class="w-6 h-6" /></button>
   </div>
   <nav aria-label="Navegação mobile" class="flex flex-col gap-6 px-8 pt-16">
-    {navigation.map((link, index) => <a href={link.href} class="flex items-baseline gap-5 text-3xl font-serif"><span class="text-xs font-sans text-primary-500">0{index + 1}</span>{link.label}</a>)}
+    {links.map((link, index) => <a href={link.href} class="flex items-baseline gap-5 text-3xl font-serif"><span class="text-xs font-sans text-primary-500">0{index + 1}</span>{link.label}</a>)}
+    <a href={telHref} class="mt-6 inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-primary-900"><Icon name="phone" class="w-5 h-5" />{site.phoneDisplay}</a>
   </nav>
 </dialog>
-<noscript><nav aria-label="Navegação alternativa" class="fixed bottom-0 inset-x-0 z-50 bg-white text-primary-900 flex justify-center gap-4 p-3 text-xs lg:hidden">{navigation.map(link => <a href={link.href}>{link.label}</a>)}</nav></noscript>
+<noscript><nav aria-label="Navegação alternativa" class="fixed bottom-0 inset-x-0 z-50 bg-white text-primary-900 flex justify-center gap-4 p-3 text-xs lg:hidden">{links.map(link => <a href={link.href}>{link.label}</a>)}</nav></noscript>
 <script src="../scripts/navigation.ts"></script>

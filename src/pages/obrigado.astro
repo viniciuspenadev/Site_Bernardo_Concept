@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import WhatsAppCta from '../components/WhatsAppCta.astro';
+import { site, telHref } from '../data/site';
+
+const message = 'Olá! Acabei de pedir um orçamento pelo site e gostaria de adiantar os detalhes.';
+---
+<Layout
+  title={`Recebemos seu pedido de orçamento | ${site.name}`}
+  description="Pedido de orçamento recebido pela Bernardo Tecnoglass. Respondemos em até 1 hora útil."
+  robots="noindex, nofollow"
+  pageConversion="formulario"
+  includeStructuredData={false}
+>
+  <Navbar />
+  <main id="conteudo" class="bg-primary-900 min-h-screen flex items-center pt-32 pb-24">
+    <div class="container mx-auto px-6 lg:px-12 max-w-2xl text-center">
+      <span class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white text-primary-900 mb-8">
+        <Icon name="check" class="w-8 h-8" />
+      </span>
+      <p class="text-primary-200 font-bold tracking-[0.2em] text-xs uppercase mb-6">Bernardo Tecnoglass</p>
+      <h1 class="text-3xl md:text-5xl font-serif text-white mb-8 leading-tight">Recebemos seu pedido de orçamento</h1>
+      <p class="text-primary-100 text-lg font-light leading-relaxed mb-4">
+        Nossa equipe responde em até <strong class="font-semibold text-white">1 hora útil</strong> pelo WhatsApp informado.
+      </p>
+      <p class="text-primary-100 text-base font-light leading-relaxed mb-10">
+        Se preferir, adiante o atendimento agora mesmo: medidas, fotos e prazo desejado ajudam a fechar o orçamento na primeira conversa.
+      </p>
+
+      <WhatsAppCta servico="obrigado" message={message} label="Falar agora no WhatsApp" variant="block" />
+
+      <a href={telHref} class="mt-6 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-white hover:text-primary-200">
+        <Icon name="phone" class="w-4 h-4" />Ou ligue: {site.phoneDisplay}
+      </a>
+
+      <p class="mt-12">
+        <a href="/" class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-primary-200 hover:text-white">
+          <Icon name="arrow" class="w-4 h-4" />Voltar para o site
+        </a>
+      </p>
+    </div>
+  </main>
+  <Footer />
+</Layout>

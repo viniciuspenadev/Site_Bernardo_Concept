@@ -1,0 +1,90 @@
+---
+import { leadServices } from '../data/lead-form';
+import { whatsappLink, site } from '../data/site';
+import Icon from './Icon.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
+
+const fallbackMessage = 'Olá! Tentei enviar o formulário do site e não consegui. Gostaria de um orçamento.';
+---
+<form
+  id="form-orcamento"
+  novalidate
+  class="mx-auto mt-12 max-w-2xl text-left"
+  aria-describedby="form-orcamento-intro"
+>
+  <p id="form-orcamento-intro" class="sr-only">Campos marcados com asterisco são obrigatórios.</p>
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    <div class="field-row" data-field="nome">
+      <label class="field-label" for="lead-nome">Nome *</label>
+      <input class="field-control" id="lead-nome" name="nome" type="text" autocomplete="name" placeholder="Como podemos chamar você" required aria-describedby="erro-nome" />
+      <p class="field-error" id="erro-nome" role="alert">Informe seu nome.</p>
+    </div>
+
+    <div class="field-row" data-field="whatsapp">
+      <label class="field-label" for="lead-whatsapp">WhatsApp *</label>
+      <input class="field-control" id="lead-whatsapp" name="whatsapp" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(11) 90000-0000" maxlength="15" required aria-describedby="erro-whatsapp" />
+      <p class="field-error" id="erro-whatsapp" role="alert">Informe um WhatsApp com DDD, no formato (11) 90000-0000.</p>
+    </div>
+
+    <div class="field-row" data-field="servico">
+      <label class="field-label" for="lead-servico">Serviço *</label>
+      <select class="field-control" id="lead-servico" name="servico" required aria-describedby="erro-servico">
+        <option value="">Selecione o serviço</option>
+        {leadServices.map(service => <option value={service}>{service}</option>)}
+      </select>
+      <p class="field-error" id="erro-servico" role="alert">Escolha o serviço desejado.</p>
+    </div>
+
+    <div class="field-row" data-field="cidade">
+      <label class="field-label" for="lead-cidade">Cidade/Bairro *</label>
+      <input class="field-control" id="lead-cidade" name="cidade" type="text" autocomplete="address-level2" placeholder="Onde fica a obra" required aria-describedby="erro-cidade" />
+      <p class="field-error" id="erro-cidade" role="alert">Informe a cidade ou o bairro da obra.</p>
+    </div>
+
+    <div class="field-row sm:col-span-2" data-field="detalhes">
+      <label class="field-label" for="lead-detalhes">Detalhes do projeto</label>
+      <textarea class="field-control" id="lead-detalhes" name="detalhes" rows="4" placeholder="Medidas, quantidade, prazo desejado… (opcional)"></textarea>
+    </div>
+
+    <div class="field-row sm:col-span-2" data-field="consentimento">
+      <div class="consent-row">
+        <input id="lead-consentimento" name="consentimento" type="checkbox" required aria-describedby="erro-consentimento" />
+        <label class="text-sm font-light leading-relaxed text-primary-100" for="lead-consentimento">
+          Autorizo a {site.name} a usar os dados enviados para entrar em contato comigo sobre este orçamento, conforme a Lei Geral de Proteção de Dados (LGPD). *
+        </label>
+      </div>
+      <p class="field-error" id="erro-consentimento" role="alert">É necessário autorizar o contato para enviarmos o orçamento.</p>
+    </div>
+  </div>
+
+  <input type="hidden" name="origem" value="" />
+  <input type="hidden" name="gclid" value="" />
+  <input type="hidden" name="pagina" value="" />
+  <div class="form-honeypot" aria-hidden="true"><label>Não preencha<input type="text" name="botcheck" tabindex="-1" autocomplete="off" /></label></div>
+
+  <button
+    type="submit"
+    class="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-10 py-5 text-sm font-bold uppercase tracking-widest text-primary-900 transition-colors hover:bg-primary-100 disabled:opacity-60"
+  >
+    <WhatsAppIcon class="w-5 h-5 shrink-0" />
+    <span data-submit-label>Solicitar orçamento</span>
+  </button>
+
+  <p class="mt-4 text-center text-xs font-light text-primary-200">Respondemos em até 1 hora útil. Seus dados não são compartilhados com terceiros.</p>
+
+  <div class="form-status" data-form-status data-tone="error" role="alert" aria-live="assertive">
+    <Icon name="alert" class="w-5 h-5 shrink-0" />
+    <span>
+      <span data-status-text>Não foi possível enviar agora.</span>
+      <a
+        class="mt-2 inline-flex items-center gap-2 font-bold text-white underline underline-offset-4"
+        href={whatsappLink(fallbackMessage)}
+        target="_blank"
+        rel="noopener"
+        data-servico="formulario-falhou"
+      ><WhatsAppIcon class="w-4 h-4" />Falar no WhatsApp agora</a>
+    </span>
+  </div>
+</form>
+<script src="../scripts/lead-form.ts"></script>

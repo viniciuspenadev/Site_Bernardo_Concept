@@ -1,0 +1,64 @@
+---
+import { googleAds, conversionValue, gclidStorageKey, gclidMaxAgeDays } from '../data/tracking';
+
+interface Props {
+  /** Conversão disparada no carregamento da página (usado em /obrigado). */
+  pageConversion?: 'formulario' | null;
+}
+const { pageConversion = null } = Astro.props;
+---
+<script
+  is:inline
+  define:vars={{
+    labels: googleAds.conversions,
+    money: conversionValue,
+    storageKey: gclidStorageKey,
+    maxAgeDays: gclidMaxAgeDays,
+    pageConversion,
+  }}
+>
+  (function () {
+    var track = function (name, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+    };
+    var convert = function (sendTo) {
+      track('conversion', { send_to: sendTo, value: money.value, currency: money.currency });
+    };
+
+    // 1. gclid da querystring, guardado por 90 dias para acompanhar o lead.
+    try {
+      var gclid = new URLSearchParams(window.location.search).get('gclid');
+      if (gclid) {
+        window.localStorage.setItem(
+          storageKey,
+          JSON.stringify({ value: gclid, expires: Date.now() + maxAgeDays * 864e5 }),
+        );
+      }
+    } catch (error) {
+      /* navegação privada ou armazenamento bloqueado: o lead segue sem gclid */
+    }
+
+    // 2. Listener único: qualquer link de WhatsApp ou telefone da página.
+    document.addEventListener('click', function (event) {
+      var target = event.target;
+      var anchor = target && target.closest ? target.closest('a[href]') : null;
+      if (!anchor) return;
+      var href = anchor.getAttribute('href') || '';
+      if (href.indexOf('wa.me') !== -1 || href.indexOf('api.whatsapp.com') !== -1) {
+        convert(labels.whatsapp);
+        track('contato_whatsapp', { servico: anchor.dataset.servico || 'geral' });
+        return;
+      }
+      if (href.slice(0, 4).toLowerCase() === 'tel:') {
+        convert(labels.telefone);
+        track('contato_telefone', {});
+      }
+    });
+
+    // 3. Conversão de formulário, disparada ao abrir a página de obrigado.
+    if (pageConversion === 'formulario') {
+      convert(labels.formulario);
+      track('solicitar_cotacao', {});
+    }
+  })();
+</script>

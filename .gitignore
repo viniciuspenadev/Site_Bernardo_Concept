@@ -4,3 +4,6 @@ dist/
 .env
 .env.*
 *.log
+
+# Exceção para o modelo de variáveis, que deve ser versionado.
+!.env.example

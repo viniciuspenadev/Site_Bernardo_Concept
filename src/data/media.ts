@@ -8,15 +8,13 @@ import glassDesktop from '../assets/tecnoglass/hero/pele-vidro-desktop-v1.png';
 import glassMobile from '../assets/tecnoglass/hero/pele-vidro-mobile-v1.png';
 
 // `src` preserva as fotos originais; o cartão do portão usa a edição vertical.
-// `heroDesktop` / `heroMobile` usam as edições generativas solicitadas para o hero.
 // Astro produz versões menores em WebP; os prompts estão em docs/HERO-IMAGENS.md.
 export const media = {
   glassBuilding: {
     src: glassMobile,
     heroDesktop: glassDesktop,
     heroMobile: glassMobile,
-    alt: 'Imagem ilustrativa de edifício comercial com fachada inteiramente revestida por pele de vidro',
-    illustrative: true,
+    alt: 'Edifício comercial com fachada inteiramente revestida por pele de vidro',
     label: 'Pele de vidro',
   },
   facade: {

@@ -8,31 +8,55 @@ import '@fontsource/playfair-display/latin-400.css';
 import '@fontsource/playfair-display/latin-400-italic.css';
 import '@fontsource/playfair-display/latin-600.css';
 import '../styles/global.css';
+import GoogleTag from '../components/GoogleTag.astro';
+import ConversionEvents from '../components/ConversionEvents.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import { site } from '../data/site';
 import { seo, structuredData } from '../data/seo';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Sobrescreve a meta robots; /obrigado usa 'noindex, nofollow'. */
+  robots?: string;
+  /** Conversão disparada no carregamento da página. */
+  pageConversion?: 'formulario' | null;
+  /** Páginas fora da home não repetem o JSON-LD da home. */
+  includeStructuredData?: boolean;
+}
+const {
+  title = site.title,
+  description = site.description,
+  robots = seo.robots,
+  pageConversion = null,
+  includeStructuredData = true,
+} = Astro.props;
 const canonical = seo.baseUrl ? new URL(Astro.url.pathname, `${seo.baseUrl}/`).href : undefined;
 ---
 <!doctype html>
 <html lang="pt-BR">
   <head>
+    <GoogleTag />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={site.description} />
+    <meta name="description" content={description} />
     <meta name="theme-color" content="#0a3560" />
-    <meta property="og:title" content={site.title} />
-    <meta property="og:description" content={site.description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content={site.name} />
     {canonical && <link rel="canonical" href={canonical} />}
     {canonical && <meta property="og:url" content={canonical} />}
-    <meta name="robots" content={seo.robots} />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
+    <meta name="robots" content={robots} />
+    {includeStructuredData && <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{site.title}</title>
+    <title>{title}</title>
   </head>
   <body class="antialiased min-h-screen bg-secondary-50 text-secondary-900 selection:bg-primary-200 selection:text-secondary-900">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <slot />
+    <WhatsAppFloat />
+    <ConversionEvents pageConversion={pageConversion} />
   </body>
 </html>

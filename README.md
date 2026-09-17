@@ -22,18 +22,39 @@ A build gera o site estático em `dist/`. Não há servidor React/Next.js em pro
 
 ## Material da Tecnoglass
 
-- `src/data/site.ts`: nome, metadados, WhatsApp, e-mail, endereço e redes sociais.
+- `src/data/site.ts`: nome, metadados, WhatsApp, telefone, NAP (razão social, CNPJ, endereço), prova social e redes sociais.
+- `src/data/tracking.ts`: ID do Google Ads e rótulos de conversão.
+- `src/data/lead-form.ts`: opções do campo Serviço e endpoint do formulário.
 - `src/data/media.ts`: imagens do topo, apresentação e sequência visual.
 - `src/data/projects.ts`: fotos, categorias e textos da galeria.
 - `src/data/content.ts`: textos dos destaques e os 13 serviços informados pelo cliente.
 - `src/components/Brand.astro`: marca tipográfica provisória; substituir pelo logotipo oficial quando recebido.
 - `src/assets/tecnoglass/`: fotografias originais da fachada e do portão, enviadas pelo cliente.
-- `src/assets/tecnoglass/hero/`: versões desktop e mobile da fachada, refeitas com edição generativa para preencher o hero. Prompts e origem em `docs/HERO-IMAGENS.md`.
+- `src/assets/tecnoglass/hero/`: versões desktop e mobile de cada slide do hero. Proveniência de cada arquivo em `docs/HERO-IMAGENS.md`.
 - `docs/reference-images/`: arquivo das fotos da base anterior, fora dos arquivos públicos e da build.
 
-O hero ocupa toda a tela, com texto sobre a fotografia. O carrossel mantém cartões horizontais, filtros, navegação e reprodução automática. O carrossel reúne seis inspirações geradas e quatro fotos fornecidas pelo cliente, incluindo os dois boxes aprimorados. O hero inclui pele de vidro, fachada residencial e portão. Cópias visuais permitem a rolagem contínua; o contador e a árvore de acessibilidade consideram somente os dez registros. Os prompts e arquivos estão em docs/PORTFOLIO-IMAGENS.md e docs/PELE-VIDRO-BOX.md. Abaixo estão preservadas a seção com foto e texto e a seção com imagem fixa durante a rolagem.
+O hero ocupa toda a tela, com texto sobre a fotografia. O carrossel mantém cartões horizontais, filtros, navegação e reprodução automática. O carrossel reúne dez cartões. O hero inclui pele de vidro, fachada residencial e portão. Cópias visuais permitem a rolagem contínua; o contador e a árvore de acessibilidade consideram somente os dez registros. Os prompts e arquivos estão em docs/PORTFOLIO-IMAGENS.md e docs/PELE-VIDRO-BOX.md. Abaixo estão preservadas a seção com foto e texto e a seção com imagem fixa durante a rolagem.
 
 O conteúdo agora descreve vidros, esquadrias, portões e soluções para sacadas conforme a lista enviada. Não são reutilizados preços, garantias, estatísticas, nomes de dirigentes ou contatos da empresa original. Os canais de contato aparecem automaticamente quando preenchidos em `site.ts`. Logo, contato e domínio oficiais ainda não foram fornecidos.
+
+## Contato e conversão
+
+O site gera contato por WhatsApp, telefone e formulário, e registra as conversões na conta
+Google Ads `AW-18287438973`. A tag do Google é o primeiro elemento do `<head>` de todas as
+páginas e um único listener no fim do `<body>` cobre todos os links de WhatsApp e telefone.
+
+O formulário entrega cada lead numa Planilha Google, por um app da web do Google Apps
+Script (`docs/apps-script/Codigo.gs`): linha na planilha e e-mail em segundos, sem
+contratar serviço nenhum. Antes de subir a campanha é preciso publicar o script e definir
+`PUBLIC_LEAD_ENDPOINT` e `PUBLIC_LEAD_TOKEN`. Copie `.env.example` para `.env` e replique
+as variáveis no Easypanel. Passo a passo em [docs/APPS-SCRIPT.md](docs/APPS-SCRIPT.md).
+
+Continuam pendentes de dados do cliente, e por isso ficam vazios em vez de inventados:
+NAP (razão social, CNPJ, endereço), números de prova social e o ID do GA4. As fotos reais de
+obras entregues também seguem pendentes — e, com os selos de ressalva removidos a pedido do
+cliente, a troca das imagens geradas virou prioridade.
+
+Passo a passo de configuração e roteiro de validação em [docs/CONVERSAO.md](docs/CONVERSAO.md).
 
 ## Publicação
 

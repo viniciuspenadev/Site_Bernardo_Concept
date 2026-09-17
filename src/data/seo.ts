@@ -1,4 +1,4 @@
-import { site } from './site';
+import { site, nap, whatsappDigits } from './site';
 import { serviceGroups } from './content';
 
 // Configure o domínio oficial e a liberação de indexação no build de publicação.
@@ -20,6 +20,18 @@ export const seo = {
   robots: indexRequested && baseUrl ? 'index, follow, max-image-preview:large' : 'noindex, follow',
 };
 
+// Endereço publicado apenas quando `nap` estiver preenchido em site.ts.
+const postalAddress = nap.street || nap.city
+  ? {
+      '@type': 'PostalAddress',
+      ...(nap.street ? { streetAddress: [nap.street, nap.district].filter(Boolean).join(' - ') } : {}),
+      ...(nap.city ? { addressLocality: nap.city } : {}),
+      ...(nap.state ? { addressRegion: nap.state } : {}),
+      ...(nap.postalCode ? { postalCode: nap.postalCode } : {}),
+      addressCountry: 'BR',
+    }
+  : undefined;
+
 // Apenas serviços confirmados e presentes no HTML; sem avaliações ou endereço fictícios.
 export const structuredData = {
   '@context': 'https://schema.org',
@@ -31,7 +43,7 @@ export const structuredData = {
       description: site.description,
       areaServed: { '@type': 'AdministrativeArea', name: site.serviceArea },
       ...(site.email ? { email: site.email } : {}),
-      ...(site.whatsapp ? { telephone: `+${site.whatsapp.replace(/\D/g, '')}` } : {}),
+      telephone: `+${whatsappDigits}`,
       ...(site.socialLinks.length ? { sameAs: site.socialLinks.map(link => link.href) } : {}),
       hasOfferCatalog: {
         '@type': 'OfferCatalog',
@@ -40,6 +52,20 @@ export const structuredData = {
           '@type': 'Offer', itemOffered: { '@type': 'Service', name, areaServed: { '@type': 'AdministrativeArea', name: site.serviceArea } },
         }))),
       },
+    },
+    {
+      '@type': 'LocalBusiness',
+      ...(baseUrl ? { '@id': `${baseUrl}/#localbusiness`, url: `${baseUrl}/` } : {}),
+      name: site.name,
+      ...(nap.legalName ? { legalName: nap.legalName } : {}),
+      ...(nap.taxId ? { taxID: nap.taxId } : {}),
+      description: site.description,
+      telephone: `+${whatsappDigits}`,
+      ...(site.email ? { email: site.email } : {}),
+      ...(postalAddress ? { address: postalAddress } : {}),
+      areaServed: { '@type': 'AdministrativeArea', name: site.serviceArea },
+      ...(nap.openingHours ? { openingHours: nap.openingHours } : {}),
+      ...(baseUrl ? { parentOrganization: { '@id': `${baseUrl}/#organization` } } : {}),
     },
     ...(baseUrl ? [{ '@type': 'WebSite', '@id': `${baseUrl}/#website`, url: `${baseUrl}/`, name: site.name, inLanguage: 'pt-BR', publisher: { '@id': `${baseUrl}/#organization` } }] : []),
   ],

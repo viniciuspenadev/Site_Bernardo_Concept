@@ -6,35 +6,32 @@ import glass from '../assets/tecnoglass/hero/pele-vidro-mobile-v1.png';
 import balcony from '../assets/tecnoglass/portfolio/sacada-premium-v1.png';
 
 // As mesmas imagens de alta qualidade já aprovadas no hero e no portfólio.
+// TROCA POR FOTOS REAIS: substituir o arquivo importado por uma foto de obra entregue
+// e atualizar o `alt`.
 // Associação por serviço para não depender da ordem das seções.
 export const servicePhotos = {
   esquadrias: {
     src: doors,
-    alt: 'Imagem ilustrativa de portas de correr com esquadrias pretas integrando sala e jardim',
+    alt: 'Portas de correr com esquadrias pretas integrando sala e jardim',
     position: '50% 50%',
-    caption: 'Imagem ilustrativa',
   },
   portoes: {
     src: gate,
-    alt: 'Foto aprimorada de portão residencial preto com estrutura metálica e fechamento em tela',
+    alt: 'Portão residencial preto com estrutura metálica e fechamento em tela',
     position: '50% 70%',
-    caption: 'Foto aprimorada',
   },
   vidros: {
     src: glass,
-    alt: 'Imagem ilustrativa de fachada comercial com pele de vidro refletindo o céu',
+    alt: 'Fachada comercial com pele de vidro refletindo o céu',
     position: '55% 65%',
-    caption: 'Imagem ilustrativa',
   },
   sacadas: {
     src: balcony,
-    alt: 'Imagem ilustrativa de envidraçamento de sacada com painéis recolhidos na lateral e vista arborizada',
+    alt: 'Envidraçamento de sacada com painéis recolhidos na lateral e vista arborizada',
     position: '55% 45%',
-    caption: 'Imagem ilustrativa',
   },
 } satisfies Record<(typeof serviceGroups)[number]['id'], {
   src: ImageMetadata;
   alt: string;
   position: string;
-  caption: string;
 }>;

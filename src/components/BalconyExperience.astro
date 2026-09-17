@@ -4,12 +4,11 @@ import balcony from '../assets/tecnoglass/interactive/sacada-aberta-v1.png';
 ---
 <div class="balcony-demo" data-balcony-demo>
   <div class="balcony-intro"><span>Uma sacada. Novas possibilidades.</span><span data-balcony-state>Fechada</span></div>
-  <div class="balcony-stage" role="img" aria-label="Demonstração ilustrativa de uma sacada com seis painéis de vidro que se recolhem na lateral" data-balcony-stage>
+  <div class="balcony-stage" role="img" aria-label="Sacada com seis painéis de vidro que se recolhem na lateral" data-balcony-stage>
     <Photo src={balcony} alt="" class="balcony-backdrop" sizes="(min-width: 1024px) 540px, (min-width: 640px) 480px, calc(100vw - 32px)" />
     <div class="balcony-glazing" aria-hidden="true" data-balcony-glazing>
       {Array.from({length: 6}, (_, index) => <div class="balcony-pane" data-balcony-pane style={`left:${index * 100 / 6}%;z-index:${12 - index}`}><span class="balcony-glint"></span><span class="balcony-fitting top"></span><span class="balcony-fitting bottom"></span></div>)}
     </div>
-    <span class="balcony-note">Demonstração ilustrativa</span>
   </div>
   <div class="balcony-controls" data-balcony-controls hidden>
     <div class="balcony-control-heading"><label for="balcony-opening">Abertura da sacada</label><output for="balcony-opening" data-balcony-percent>0%</output></div>

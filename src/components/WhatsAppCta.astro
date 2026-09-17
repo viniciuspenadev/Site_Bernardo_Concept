@@ -1,0 +1,31 @@
+---
+import WhatsAppIcon from './WhatsAppIcon.astro';
+import { whatsappLink } from '../data/site';
+
+interface Props {
+  /** Valor de data-servico lido pelo listener de conversão. */
+  servico: string;
+  /** Mensagem já preenchida na conversa. */
+  message: string;
+  label?: string;
+  /** solid: fundo azul sobre seção clara · light: pílula branca sobre fundo escuro · block: largura total */
+  variant?: 'solid' | 'light' | 'block';
+  class?: string;
+}
+const { servico, message, label = 'Falar no WhatsApp', variant = 'solid', class: className = '' } = Astro.props;
+const base = 'wa-cta inline-flex items-center justify-center gap-3 px-8 py-4 text-xs font-bold uppercase tracking-widest rounded-full transition-colors';
+// O verde do WhatsApp fica reservado ao botão flutuante; os CTAs seguem a paleta do site.
+const styles = {
+  solid: 'bg-primary-900 text-white hover:bg-primary-700',
+  light: 'bg-white text-primary-900 hover:bg-primary-100',
+  block: 'w-full bg-white text-primary-900 hover:bg-primary-100 px-10 py-5 text-sm',
+};
+---
+<a
+  href={whatsappLink(message)}
+  target="_blank"
+  rel="noopener"
+  data-servico={servico}
+  aria-label={`${label} — ${message}`}
+  class={`${base} ${styles[variant]} ${className}`}
+><WhatsAppIcon class="w-5 h-5 shrink-0" />{label}</a>

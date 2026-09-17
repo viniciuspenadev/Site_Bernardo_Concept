@@ -1,0 +1,15 @@
+---
+import WhatsAppIcon from './WhatsAppIcon.astro';
+import { whatsappLink } from '../data/site';
+
+// Botão flutuante presente em todas as páginas, acima de qualquer seção.
+const message = 'Olá! Vim pelo site e gostaria de um orçamento.';
+---
+<a
+  href={whatsappLink(message)}
+  target="_blank"
+  rel="noopener"
+  data-servico="flutuante"
+  aria-label="Falar com a Bernardo Tecnoglass no WhatsApp e pedir um orçamento"
+  class="wa-float"
+><WhatsAppIcon class="w-8 h-8" /></a>

@@ -1,6 +1,6 @@
 ---
-import { ArrowRight, ChevronLeft, ChevronRight, Menu, X, PenTool, Sun, Layers, Sparkles, MessageCircle, Pause, Play, PanelsTopLeft, Fence, BuildingComplex, ArrowUpRight } from '@lucide/astro';
-const icons = { arrow: ArrowRight, left: ChevronLeft, right: ChevronRight, menu: Menu, close: X, pen: PenTool, sun: Sun, layers: Layers, sparkles: Sparkles, message: MessageCircle, pause: Pause, play: Play, window: PanelsTopLeft, gate: Fence, building: BuildingComplex, expand: ArrowUpRight };
+import { ArrowRight, ChevronLeft, ChevronRight, Menu, X, PenTool, Sun, Layers, Sparkles, MessageCircle, Pause, Play, PanelsTopLeft, Fence, BuildingComplex, ArrowUpRight, Phone, Star, Check, CircleAlert } from '@lucide/astro';
+const icons = { arrow: ArrowRight, left: ChevronLeft, right: ChevronRight, menu: Menu, close: X, pen: PenTool, sun: Sun, layers: Layers, sparkles: Sparkles, message: MessageCircle, pause: Pause, play: Play, window: PanelsTopLeft, gate: Fence, building: BuildingComplex, expand: ArrowUpRight, phone: Phone, star: Star, check: Check, alert: CircleAlert };
 interface Props { name: keyof typeof icons; class?: string; }
 const { name, class: className = 'w-5 h-5' } = Astro.props;
 const Symbol = icons[name];
