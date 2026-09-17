@@ -47,8 +47,9 @@ Passo a passo completo em [APPS-SCRIPT.md](APPS-SCRIPT.md). Resumo:
 1. Criar a planilha e colar `docs/apps-script/Codigo.gs` em **Extensões → Apps Script**.
 2. Preencher `EMAIL_DESTINO` e `TOKEN` no bloco `CONFIG` do script.
 3. Publicar como **App da Web**, executando como você, acessível a **Qualquer pessoa**.
-4. Definir `PUBLIC_LEAD_ENDPOINT` (URL `/exec`) e `PUBLIC_LEAD_TOKEN` no `.env` e no Easypanel.
-5. `npm run build` — as variáveis são embutidas na build.
+4. Ajustar `leadEndpoint` e `leadToken` em `src/data/lead-form.ts` (no código, não em
+   variável de ambiente: a build roda dentro do Docker e não enxerga variável do Easypanel).
+5. `npm run build`.
 
 Enquanto `PUBLIC_LEAD_ENDPOINT` estiver vazio, o formulário valida normalmente mas avisa
 "O envio do formulário ainda não está configurado" e oferece o WhatsApp — nenhum visitante

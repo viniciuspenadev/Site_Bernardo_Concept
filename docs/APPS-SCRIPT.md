@@ -62,22 +62,29 @@ Cole no navegador para conferir: deve responder `{"success":true,"message":"Endp
 
 ## Passo 5 — Ligar o site ao script
 
-Na raiz do projeto, crie o arquivo `.env` (ou edite as variáveis no Easypanel):
-
-```sh
-PUBLIC_LEAD_ENDPOINT=https://script.google.com/macros/s/AKfycb.../exec
-PUBLIC_LEAD_TOKEN=tecnoglass-2026
-```
-
-O `PUBLIC_LEAD_TOKEN` tem que ser **exatamente** o mesmo `TOKEN` do passo 2.
-
-Depois, gere a build:
+A URL `/exec` e o `TOKEN` ficam em [`src/data/lead-form.ts`](../src/data/lead-form.ts),
+no código do site. Basta editar as duas constantes do fim do arquivo e gerar a build:
 
 ```sh
 npm run build
 ```
 
-As variáveis são embutidas na build — **trocar a URL ou o token exige build nova**.
+**Não coloque esses valores em variável de ambiente do Easypanel.** O site é estático e a
+build roda dentro do Docker: variável do painel é de *runtime do contêiner* e não chega à
+build, então o site sobe com o formulário desligado, sem erro nenhum aparecer no deploy.
+Foi o que aconteceu na primeira publicação.
+
+Guardar a URL e o token no código não perde sigilo: os dois já são entregues em texto
+claro no JavaScript de qualquer visitante. O token é filtro anti-robô, não senha.
+
+Se precisar apontar a um script de teste sem mexer no código, passe como *build arg*:
+
+```sh
+docker build --build-arg PUBLIC_LEAD_ENDPOINT=... --build-arg PUBLIC_LEAD_TOKEN=... .
+```
+
+O `Dockerfile` também verifica, ao fim da build, se o endpoint está presente no HTML —
+uma build sem destino de lead falha em vez de ir para produção desligada.
 
 ## Passo 6 — Testar
 
@@ -101,7 +108,7 @@ fica sem caminho de contato.
 **Implantar → Gerenciar implantações → ✏️ (editar) → Versão: Nova versão → Implantar**
 
 Isso mantém a **mesma URL**. Se você usar "Nova implantação", sai uma URL diferente e o site
-para de entregar até você atualizar o `.env` e refazer a build.
+para de entregar até você atualizar `leadEndpoint` em `src/data/lead-form.ts` e refazer a build.
 
 ## Limites e diagnóstico
 
@@ -111,7 +118,8 @@ para de entregar até você atualizar o `.env` e refazer a build.
 - **Erros**: no editor do Apps Script, menu lateral **Execuções**, mostra cada chamada e a
   mensagem de erro.
 - **Spam**: o formulário tem campo-armadilha invisível e o `TOKEN`. Se começar a entrar lixo,
-  troque o `TOKEN` no script e no `.env` e refaça a build.
+  troque o `TOKEN` no script (republicando como "Nova versão") e `leadToken` em
+  `src/data/lead-form.ts`, e refaça a build.
 
 ## Por que o envio usa `text/plain`
 

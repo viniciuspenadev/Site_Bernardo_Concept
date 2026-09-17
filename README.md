@@ -45,9 +45,9 @@ páginas e um único listener no fim do `<body>` cobre todos os links de WhatsAp
 
 O formulário entrega cada lead numa Planilha Google, por um app da web do Google Apps
 Script (`docs/apps-script/Codigo.gs`): linha na planilha e e-mail em segundos, sem
-contratar serviço nenhum. Antes de subir a campanha é preciso publicar o script e definir
-`PUBLIC_LEAD_ENDPOINT` e `PUBLIC_LEAD_TOKEN`. Copie `.env.example` para `.env` e replique
-as variáveis no Easypanel. Passo a passo em [docs/APPS-SCRIPT.md](docs/APPS-SCRIPT.md).
+contratar serviço nenhum. A URL do script e o token ficam em `src/data/lead-form.ts`, no código — e não em variável
+de ambiente, porque a build roda dentro do Docker e não enxerga as variáveis de runtime do
+Easypanel. Passo a passo em [docs/APPS-SCRIPT.md](docs/APPS-SCRIPT.md).
 
 Continuam pendentes de dados do cliente, e por isso ficam vazios em vez de inventados:
 NAP (razão social, CNPJ, endereço), números de prova social e o ID do GA4. As fotos reais de

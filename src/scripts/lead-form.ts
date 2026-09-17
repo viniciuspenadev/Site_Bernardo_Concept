@@ -1,12 +1,13 @@
-import { leadEndpoint } from '../data/lead-form';
+import { leadEndpoint, leadToken } from '../data/lead-form';
 import { gclidStorageKey, gclidMaxAgeDays } from '../data/tracking';
 
 const form = document.querySelector<HTMLFormElement>('#form-orcamento');
 
 if (form) {
-  // Acesso direto a import.meta.env para que o Vite substitua os valores na build.
-  const endpoint: string = import.meta.env.PUBLIC_LEAD_ENDPOINT ?? leadEndpoint;
-  const token: string = import.meta.env.PUBLIC_LEAD_TOKEN ?? '';
+  // As variáveis de ambiente apenas sobrescrevem o padrão do código, para apontar a
+  // um script de teste. `||` e não `??`: variável declarada vazia cai no padrão.
+  const endpoint: string = import.meta.env.PUBLIC_LEAD_ENDPOINT || leadEndpoint;
+  const token: string = import.meta.env.PUBLIC_LEAD_TOKEN || leadToken;
 
   const status = form.querySelector<HTMLElement>('[data-form-status]');
   const statusText = form.querySelector<HTMLElement>('[data-status-text]');
