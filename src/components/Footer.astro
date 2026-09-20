@@ -23,7 +23,7 @@ const ano = new Date().getFullYear();
 
 // A quarta coluna nunca fica vazia: sem endereço cadastrado ela mostra a área de
 // atendimento. É o que mantém as quatro colunas equilibradas antes do NAP existir.
-const tituloLocal = temEndereco ? 'Onde estamos' : 'Atendimento';
+const tituloLocal = temEndereco ? 'Nossa Fábrica' : 'Atendimento';
 ---
 <footer class="site-footer text-primary-100">
   <div class="container mx-auto px-6 lg:px-12">
@@ -136,20 +136,19 @@ const tituloLocal = temEndereco ? 'Onde estamos' : 'Atendimento';
         href="https://www.bluedigitalhub.com.br"
         target="_blank"
         rel="noopener noreferrer"
-        class="group inline-flex items-center gap-3.5 shrink-0"
+        class="inline-flex items-center shrink-0"
         aria-label="Site desenvolvido pela BlueDigitalHub"
       >
-        <span class="footer-label whitespace-nowrap">Site por</span>
         <Image
           src={bdhLogo}
           alt="BlueDigitalHub"
-          width={130}
+          width={108}
           densities={[1, 2]}
           format="webp"
           quality={90}
           loading="lazy"
           decoding="async"
-          class="h-[17px] w-auto"
+          class="h-[14px] w-auto"
         />
       </a>
     </div>
