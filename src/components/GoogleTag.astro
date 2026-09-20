@@ -2,16 +2,18 @@
 // Tag do Google (gtag.js) — primeiro elemento do <head> de todas as páginas.
 // O snippet é emitido no formato canônico, sem empacotamento, para que o
 // Google Tag Assistant o reconheça e `gtag` fique disponível globalmente.
-import { googleAds } from '../data/tracking';
+//
+// Um único carregamento de gtag.js atende as duas contas: o Google Ads e o GA4
+// entram como dois `config`. Não é preciso repetir a tag <script src> do GA4 —
+// o snippet que o Google entrega faz isso só porque é gerado conta a conta.
+import { googleAds, ga4Id } from '../data/tracking';
 
 const snippet = `
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', '${googleAds.id}');
-  // GA4: criar a propriedade, copiar o ID de medição e descomentar a linha abaixo.
-  // gtag('config', 'G-XXXXXXXXXX');
-`;
+${ga4Id ? `  gtag('config', '${ga4Id}');\n` : `  // GA4: preencher ga4Id em src/data/tracking.ts para ativar.\n`}`;
 ---
 <!-- Google tag (gtag.js) -->
 <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${googleAds.id}`}></script>

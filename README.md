@@ -50,7 +50,7 @@ de ambiente, porque a build roda dentro do Docker e não enxerga as variáveis d
 Easypanel. Passo a passo em [docs/APPS-SCRIPT.md](docs/APPS-SCRIPT.md).
 
 Continuam pendentes de dados do cliente, e por isso ficam vazios em vez de inventados:
-NAP (razão social, CNPJ, endereço), números de prova social e o ID do GA4. As fotos reais de
+NAP (razão social, CNPJ, endereço) e números de prova social. As fotos reais de
 obras entregues também seguem pendentes — e, com os selos de ressalva removidos a pedido do
 cliente, a troca das imagens geradas virou prioridade.
 

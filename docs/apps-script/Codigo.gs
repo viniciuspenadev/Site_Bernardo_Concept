@@ -24,9 +24,58 @@ var COLUNAS = [
   'Detalhes', 'Consentimento LGPD', 'Origem', 'gclid', 'Página',
 ];
 
-/** Abre a página no navegador só para confirmar que o deploy está no ar. */
-function doGet() {
+/**
+ * Abre a página no navegador só para confirmar que o deploy está no ar.
+ *
+ * Acrescentando ?diagnostico=SEU_TOKEN na URL, devolve em qual planilha e aba o
+ * script está gravando — útil quando o lead responde "success" mas não aparece.
+ */
+function doGet(e) {
+  var parametros = (e && e.parameter) || {};
+  if (CONFIG.TOKEN && parametros.diagnostico === CONFIG.TOKEN) {
+    return resposta(diagnostico());
+  }
   return resposta({ success: true, message: 'Endpoint de leads ativo.' });
+}
+
+/** Relatório de onde os leads estão caindo. Protegido pelo TOKEN. */
+function diagnostico() {
+  try {
+    var planilha = SpreadsheetApp.getActiveSpreadsheet();
+
+    if (!planilha) {
+      return {
+        success: false,
+        problema: 'SCRIPT_SEM_PLANILHA',
+        message: 'O script não está vinculado a nenhuma planilha. Ele foi criado como ' +
+          'projeto avulso em script.google.com, em vez de Extensões → Apps Script de ' +
+          'dentro da planilha. Os leads não têm onde ser gravados.',
+      };
+    }
+
+    var abas = planilha.getSheets().map(function (aba) {
+      return aba.getName() + ' (' + aba.getLastRow() + ' linhas)';
+    });
+
+    var abaLeads = planilha.getSheetByName(CONFIG.ABA);
+    var ultimo = '(nenhum lead gravado)';
+    if (abaLeads && abaLeads.getLastRow() > 1) {
+      ultimo = abaLeads.getRange(abaLeads.getLastRow(), 1, 1, 4).getValues()[0].join(' | ');
+    }
+
+    return {
+      success: true,
+      planilha: planilha.getName(),
+      urlDaPlanilha: planilha.getUrl(),
+      abasExistentes: abas,
+      abaConfigurada: CONFIG.ABA,
+      ultimoLead: ultimo,
+      executandoComo: Session.getEffectiveUser().getEmail(),
+      emailDestino: CONFIG.EMAIL_DESTINO,
+    };
+  } catch (erro) {
+    return { success: false, problema: 'ERRO_NO_DIAGNOSTICO', message: String(erro) };
+  }
 }
 
 function doPost(e) {
@@ -74,9 +123,10 @@ function doPost(e) {
 
     return resposta({ success: true });
   } catch (erro) {
-    // O erro fica no painel de execuções do Apps Script para diagnóstico.
+    // O erro também fica no painel de execuções do Apps Script.
+    // Devolvê-lo na resposta evita falha silenciosa: só quem tem o TOKEN chega aqui.
     console.error(erro);
-    return resposta({ success: false, message: 'Erro ao processar o lead.' });
+    return resposta({ success: false, message: 'Erro ao processar o lead: ' + erro });
   }
 }
 

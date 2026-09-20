@@ -7,7 +7,7 @@ o que precisa ser configurado antes de subir a campanha e como validar cada item
 
 | Item | Onde |
 | --- | --- |
-| Tag do Google (`AW-18287438973`) como primeiro elemento do `<head>` | `src/components/GoogleTag.astro`, injetado por `src/layouts/Layout.astro` |
+| Tag do Google (`AW-18287438973` + GA4 `G-RPBMP9ELX7`) como primeiro elemento do `<head>` | `src/components/GoogleTag.astro`, injetado por `src/layouts/Layout.astro` |
 | IDs e rótulos de conversão | `src/data/tracking.ts` |
 | Botão flutuante de WhatsApp | `src/components/WhatsAppFloat.astro` + `.wa-float` em `src/styles/global.css` |
 | CTAs de WhatsApp por serviço | `src/components/WhatsAppCta.astro`, usados em `Hero.astro` e `Services.astro` |
@@ -66,10 +66,16 @@ Se quiser que a mensagem chegue direto num número de WhatsApp, sem passar pelo 
 Apps Script com `UrlFetchApp` — o token fica no script, no servidor do Google, nunca no
 navegador. Isso ainda não foi implementado.
 
-### 2.3 GA4 (quando a propriedade existir)
+### 2.3 GA4 — instalado
 
-Criar a propriedade GA4, copiar o ID de medição (`G-...`) e descomentar a linha
-`gtag('config', 'G-XXXXXXXXXX')` em `src/components/GoogleTag.astro`. Nenhum ID foi inventado.
+Propriedade **G-RPBMP9ELX7**, ligada em 20/09/2026 (`ga4Id` em `src/data/tracking.ts`).
+Um único carregamento de `gtag.js` atende as duas contas: Ads e GA4 entram como dois
+`config`. Para desligar o GA4 sem mexer em mais nada, basta esvaziar `ga4Id`.
+
+Os eventos `contato_whatsapp`, `contato_telefone` e `solicitar_cotacao` são disparados
+**sem** `send_to`, então chegam também ao GA4 automaticamente, junto do `page_view`.
+As conversões (`conversion`) levam `send_to` apontando para os rótulos do Ads e não
+aparecem no GA4 — é o comportamento correto, para não duplicar métrica.
 
 ### 2.4 NAP e prova social (dados do cliente)
 
@@ -110,8 +116,9 @@ automaticamente — basta subir o original em boa resolução (JPG ou PNG).
 
 1. `npm run build && npm run preview` (ou o site publicado).
 2. Abra <https://tagassistant.google.com>, conecte ao domínio.
-3. Esperado: tag `AW-18287438973` detectada em `/` e em `/obrigado`.
+3. Esperado: as tags `AW-18287438973` **e** `G-RPBMP9ELX7` detectadas em `/` e em `/obrigado`.
 4. No console do navegador, `typeof window.gtag` deve retornar `"function"` nas duas páginas.
+5. No GA4, **Relatórios → Tempo real** deve registrar a visita em até 30 segundos.
 
 ### 3.2 Cliques de WhatsApp e telefone
 

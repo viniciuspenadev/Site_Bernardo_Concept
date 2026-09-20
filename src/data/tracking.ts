@@ -9,6 +9,10 @@ export const googleAds = {
   },
 } as const;
 
+// Propriedade do Google Analytics 4, criada em 20/09/2026.
+// Vazio desliga o GA4 sem mexer em mais nada; o Google Ads continua funcionando.
+export const ga4Id = 'G-RPBMP9ELX7';
+
 // Valor padrão enviado com cada conversão. Ajustar quando houver ticket médio confirmado.
 export const conversionValue = { value: 1.0, currency: 'BRL' } as const;
 
