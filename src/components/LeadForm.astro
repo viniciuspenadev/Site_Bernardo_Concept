@@ -4,18 +4,36 @@ import { whatsappLink, site } from '../data/site';
 import Icon from './Icon.astro';
 import WhatsAppIcon from './WhatsAppIcon.astro';
 
+interface Props {
+  /** 'curto' remove Cidade/Bairro e Detalhes. Usado na página /whatsapp. */
+  variant?: 'completo' | 'curto';
+  /** Sobrescreve a origem detectada. Ex.: 'pagina-whatsapp'. */
+  origem?: string;
+  /** Opções do select. Padrão: a lista completa de serviços. */
+  servicos?: readonly string[];
+  class?: string;
+}
+const {
+  variant = 'completo',
+  origem,
+  servicos = leadServices,
+  class: className = 'mx-auto mt-12 max-w-2xl text-left',
+} = Astro.props;
+
+const curto = variant === 'curto';
 const fallbackMessage = 'Olá! Tentei enviar o formulário do site e não consegui. Gostaria de um orçamento.';
 ---
 <form
   id="form-orcamento"
   novalidate
-  class="mx-auto mt-12 max-w-2xl text-left"
+  data-origem={origem}
+  class={className}
   aria-describedby="form-orcamento-intro"
 >
   <p id="form-orcamento-intro" class="sr-only">Campos marcados com asterisco são obrigatórios.</p>
 
   <div class="grid gap-6 sm:grid-cols-2">
-    <div class="field-row" data-field="nome">
+    <div class={`field-row${curto ? ' sm:col-span-2' : ''}`} data-field="nome">
       <label class="field-label" for="lead-nome">Nome *</label>
       <input class="field-control" id="lead-nome" name="nome" type="text" autocomplete="name" placeholder="Como podemos chamar você" required aria-describedby="erro-nome" />
       <p class="field-error" id="erro-nome" role="alert">Informe seu nome.</p>
@@ -31,21 +49,25 @@ const fallbackMessage = 'Olá! Tentei enviar o formulário do site e não conseg
       <label class="field-label" for="lead-servico">Serviço *</label>
       <select class="field-control" id="lead-servico" name="servico" required aria-describedby="erro-servico">
         <option value="">Selecione o serviço</option>
-        {leadServices.map(service => <option value={service}>{service}</option>)}
+        {servicos.map(service => <option value={service}>{service}</option>)}
       </select>
       <p class="field-error" id="erro-servico" role="alert">Escolha o serviço desejado.</p>
     </div>
 
-    <div class="field-row" data-field="cidade">
-      <label class="field-label" for="lead-cidade">Cidade/Bairro *</label>
-      <input class="field-control" id="lead-cidade" name="cidade" type="text" autocomplete="address-level2" placeholder="Onde fica a obra" required aria-describedby="erro-cidade" />
-      <p class="field-error" id="erro-cidade" role="alert">Informe a cidade ou o bairro da obra.</p>
-    </div>
+    {!curto && (
+      <div class="field-row" data-field="cidade">
+        <label class="field-label" for="lead-cidade">Cidade/Bairro *</label>
+        <input class="field-control" id="lead-cidade" name="cidade" type="text" autocomplete="address-level2" placeholder="Onde fica a obra" required aria-describedby="erro-cidade" />
+        <p class="field-error" id="erro-cidade" role="alert">Informe a cidade ou o bairro da obra.</p>
+      </div>
+    )}
 
-    <div class="field-row sm:col-span-2" data-field="detalhes">
-      <label class="field-label" for="lead-detalhes">Detalhes do projeto</label>
-      <textarea class="field-control" id="lead-detalhes" name="detalhes" rows="4" placeholder="Medidas, quantidade, prazo desejado… (opcional)"></textarea>
-    </div>
+    {!curto && (
+      <div class="field-row sm:col-span-2" data-field="detalhes">
+        <label class="field-label" for="lead-detalhes">Detalhes do projeto</label>
+        <textarea class="field-control" id="lead-detalhes" name="detalhes" rows="4" placeholder="Medidas, quantidade, prazo desejado… (opcional)"></textarea>
+      </div>
+    )}
 
     <div class="field-row sm:col-span-2" data-field="consentimento">
       <div class="consent-row">

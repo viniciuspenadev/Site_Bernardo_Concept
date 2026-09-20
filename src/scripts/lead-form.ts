@@ -45,8 +45,10 @@ if (form) {
   if (freshGclid) persistGclid(freshGclid);
   const gclid = freshGclid || readStoredGclid();
 
+  // data-origem no <form> tem prioridade: identifica de qual página veio o lead.
   let origem = 'direto';
-  if (gclid) origem = 'google-ads';
+  if (form.dataset.origem) origem = form.dataset.origem;
+  else if (gclid) origem = 'google-ads';
   else if (params.get('utm_source')) origem = params.get('utm_source') as string;
   else if (document.referrer) {
     try {
@@ -122,6 +124,11 @@ if (form) {
 
   const rowOf = (field: string) => form.querySelector<HTMLElement>(`[data-field="${field}"]`);
 
+  // A variante curta do formulário não traz Cidade/Bairro. Validar um campo que
+  // não existe travaria o envio num erro invisível, então filtramos pelas
+  // linhas realmente renderizadas.
+  const regrasAtivas = rules.filter(rule => rowOf(rule.field) !== null);
+
   const mark = (rule: Rule) => {
     const ok = rule.valid();
     const row = rowOf(rule.field);
@@ -132,7 +139,7 @@ if (form) {
   };
 
   let validateLive = false;
-  for (const rule of rules) {
+  for (const rule of regrasAtivas) {
     const control = fieldOf(rule.field);
     if (!(control instanceof HTMLElement)) continue;
     const revalidate = () => {
@@ -160,9 +167,9 @@ if (form) {
     validateLive = true;
     if (status) status.dataset.visible = 'false';
 
-    const firstInvalid = rules.map(mark).indexOf(false);
+    const firstInvalid = regrasAtivas.map(mark).indexOf(false);
     if (firstInvalid !== -1) {
-      const rule = rules[firstInvalid];
+      const rule = regrasAtivas[firstInvalid];
       rowOf(rule.field)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
       const control = fieldOf(rule.field);
       if (control instanceof HTMLElement) control.focus({ preventScroll: true });
@@ -184,7 +191,9 @@ if (form) {
       nome: valueOf('nome'),
       whatsapp: valueOf('whatsapp'),
       servico: valueOf('servico'),
-      cidade: valueOf('cidade'),
+      // O formulário curto não pergunta a cidade. Enviar o texto explicito mantém a
+      // coluna da planilha legível e passa pela validação do Apps Script já publicado.
+      cidade: valueOf('cidade') || 'Não informado',
       detalhes: valueOf('detalhes'),
       consentimento: isChecked('consentimento'),
       origem,

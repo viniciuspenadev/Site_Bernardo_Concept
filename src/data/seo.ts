@@ -1,4 +1,4 @@
-import { site, nap, whatsappDigits } from './site';
+import { site, nap, openingHoursSchema, whatsappDigits } from './site';
 import { serviceGroups } from './content';
 
 // Configure o domínio oficial e a liberação de indexação no build de publicação.
@@ -64,7 +64,9 @@ export const structuredData = {
       ...(site.email ? { email: site.email } : {}),
       ...(postalAddress ? { address: postalAddress } : {}),
       areaServed: { '@type': 'AdministrativeArea', name: site.serviceArea },
-      ...(nap.openingHours ? { openingHours: nap.openingHours } : {}),
+      ...(openingHoursSchema.length ? { openingHours: openingHoursSchema } : {}),
+      ...(nap.mapsUrl ? { hasMap: nap.mapsUrl } : {}),
+      ...(nap.mapsUrl ? { sameAs: [nap.mapsUrl] } : {}),
       ...(baseUrl ? { parentOrganization: { '@id': `${baseUrl}/#organization` } } : {}),
     },
     ...(baseUrl ? [{ '@type': 'WebSite', '@id': `${baseUrl}/#website`, url: `${baseUrl}/`, name: site.name, inLanguage: 'pt-BR', publisher: { '@id': `${baseUrl}/#organization` } }] : []),

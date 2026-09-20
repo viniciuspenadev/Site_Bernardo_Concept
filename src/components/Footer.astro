@@ -1,57 +1,157 @@
 ---
+import { Image } from 'astro:assets';
 import Brand from './Brand.astro';
 import Icon from './Icon.astro';
 import WhatsAppIcon from './WhatsAppIcon.astro';
-import { site, navigation, napLines, telHref, whatsappLink } from '../data/site';
+// Wordmark sem a fileira de icones: no tamanho de assinatura (26px) os icones
+// viram borrao. O lockup completo esta em logo-branco.png, se preferir.
+import bdhLogo from '../assets/bluedigitalhub/logo-branco-wordmark.png';
+import { serviceGroups } from '../data/content';
+import {
+  site, navigation, nap, openingHours, addressLine, telHref, whatsappLink,
+} from '../data/site';
 
 // Fora da home as âncoras precisam apontar para a home antes do fragmento.
 const prefix = Astro.url.pathname === '/' ? '' : '/';
 const links = navigation.map(link => ({ ...link, href: `${prefix}${link.href}` }));
 const footerMessage = 'Olá! Vim pelo site e gostaria de um orçamento.';
+
+const temEndereco = Boolean(addressLine);
+const temHorario = openingHours.length > 0;
+const temIdentificacao = Boolean(nap.legalName || nap.taxId);
+const ano = new Date().getFullYear();
+
+// A quarta coluna nunca fica vazia: sem endereço cadastrado ela mostra a área de
+// atendimento. É o que mantém as quatro colunas equilibradas antes do NAP existir.
+const tituloLocal = temEndereco ? 'Onde estamos' : 'Atendimento';
 ---
-<footer class="bg-primary-900 text-primary-100 py-16 border-t border-primary-800">
-  <div class="container mx-auto px-4 lg:px-12">
-    <div class="grid gap-12 md:grid-cols-3 mb-16">
+<footer class="site-footer text-primary-100">
+  <div class="container mx-auto px-6 lg:px-12">
+
+    <!-- Faixa de contato -->
+    <div class="flex flex-col gap-10 py-14 lg:flex-row lg:items-center lg:justify-between lg:py-16">
       <div class="max-w-sm">
-        <a href={`${prefix}#inicio`} aria-label="Bernardo Tecnoglass — início" class="text-white inline-block mb-6"><Brand /></a>
-        <p class="text-sm leading-relaxed">{site.description}</p>
+        <a href={`${prefix}#inicio`} aria-label={`${site.name} — início`} class="text-white inline-block mb-5"><Brand /></a>
+        <p class="text-sm leading-relaxed text-primary-200">{site.description}</p>
       </div>
 
-      <nav aria-label="Navegação do rodapé">
-        <h2 class="text-white font-serif text-lg mb-5">Explore</h2>
-        <ul class="space-y-3 text-sm">{links.map(link => <li><a href={link.href} class="hover:text-white">{link.label}</a></li>)}</ul>
+      <div class="flex flex-col items-start gap-5 shrink-0 lg:items-end">
+        <p class="footer-label">Orçamento sem compromisso</p>
+        <a href={telHref} class="footer-phone">{site.phoneDisplay}</a>
+        <a
+          href={whatsappLink(footerMessage)}
+          target="_blank"
+          rel="noopener"
+          data-servico="rodape"
+          class="inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-primary-900 transition-colors hover:bg-primary-100"
+        ><WhatsAppIcon class="w-4 h-4 shrink-0" />Pedir orçamento</a>
+      </div>
+    </div>
+
+    <!-- Quatro colunas, sempre preenchidas -->
+    <div class="grid gap-x-8 gap-y-10 border-t border-white/10 py-12 grid-cols-2 lg:grid-cols-4">
+
+      <nav aria-labelledby="rodape-explore">
+        <h2 id="rodape-explore" class="footer-label mb-5">Navegue</h2>
+        <ul class="space-y-3 text-sm">
+          {links.map(link => <li><a href={link.href} class="footer-link">{link.label}</a></li>)}
+        </ul>
       </nav>
 
       <div>
-        <h2 class="text-white font-serif text-lg mb-5">Atendimento</h2>
+        <h2 class="footer-label mb-5">Soluções</h2>
+        <ul class="space-y-3 text-sm text-primary-200">
+          {serviceGroups.map(grupo => <li>{grupo.title}</li>)}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer-label mb-5">Contato</h2>
         <ul class="space-y-3 text-sm">
           <li>
-            <a class="inline-flex items-center gap-2 hover:text-white" href={whatsappLink(footerMessage)} target="_blank" rel="noopener" data-servico="rodape">
-              <WhatsAppIcon class="w-4 h-4" />WhatsApp {site.phoneDisplay}
+            <a class="footer-link inline-flex items-center gap-2.5" href={whatsappLink(footerMessage)} target="_blank" rel="noopener" data-servico="rodape-lista">
+              <WhatsAppIcon class="w-4 h-4 shrink-0" />WhatsApp
             </a>
           </li>
           <li>
-            <a class="inline-flex items-center gap-2 hover:text-white" href={telHref}>
-              <Icon name="phone" class="w-4 h-4" />{site.phoneDisplay}
+            <a class="footer-link inline-flex items-center gap-2.5" href={telHref}>
+              <Icon name="phone" class="w-4 h-4 shrink-0" />Ligar agora
             </a>
           </li>
-          {site.email && <li><a class="hover:text-white" href={`mailto:${site.email}`}>{site.email}</a></li>}
-          <li>Atendimento na {site.serviceArea}.</li>
-          {site.socialLinks.map(link => <li><a class="hover:text-white" href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a></li>)}
+          {site.email && (
+            <li><a class="footer-link" href={`mailto:${site.email}`}>{site.email}</a></li>
+          )}
+          {site.socialLinks.map(link => (
+            <li><a class="footer-link" href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a></li>
+          ))}
         </ul>
+      </div>
 
-        {/* NAP completo: preencher `nap` em src/data/site.ts com os dados do contrato social. */}
-        {napLines.length > 0 && (
-          <address class="mt-6 not-italic text-sm leading-relaxed text-primary-200">
-            {napLines.map(line => <span class="block">{line}</span>)}
+      <div>
+        <h2 class="footer-label mb-5">{tituloLocal}</h2>
+
+        {temEndereco ? (
+          <address class="not-italic text-sm leading-relaxed text-primary-200 mb-5">
+            {nap.mapsUrl
+              ? <a href={nap.mapsUrl} target="_blank" rel="noopener noreferrer" class="footer-link">{addressLine}</a>
+              : addressLine}
           </address>
+        ) : (
+          <p class="text-sm leading-relaxed text-primary-200 mb-5">
+            Atendemos toda a {site.serviceArea}. Fale com a gente para confirmar a sua região e agendar a medição.
+          </p>
+        )}
+
+        <!-- O horário usa flex-wrap: abaixo de ~360px as duas colunas do rodapé ficam
+             estreitas demais e o horário estouraria a largura da tela. Assim ele desce. -->
+        {temHorario && (
+          <dl class="text-sm space-y-2 mb-5">
+            {openingHours.map(faixa => (
+              <div class="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-white/10 pb-2">
+                <dt class="text-primary-300">{faixa.days}</dt>
+                <dd class="text-white tabular-nums whitespace-nowrap">{faixa.time}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+
+        {nap.mapsUrl && (
+          <a href={nap.mapsUrl} target="_blank" rel="noopener noreferrer" class="footer-link inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white">
+            Ver no Maps<Icon name="expand" class="w-4 h-4" />
+          </a>
         )}
       </div>
     </div>
 
-    <div class="border-t border-primary-800 pt-8 flex flex-col md:flex-row justify-between gap-4 text-xs tracking-wider">
-      <p>© {new Date().getFullYear()} {site.name}.</p>
-      <a href="https://www.bluedigitalhub.com.br" target="_blank" rel="noopener noreferrer" class="text-white">BlueDigitalHub</a>
+    <!-- Identificação legal e assinatura -->
+    <div class="flex flex-col-reverse gap-6 border-t border-white/10 py-7 lg:flex-row lg:items-center lg:justify-between">
+      <div class="space-y-1 text-xs leading-relaxed tracking-wide text-primary-300">
+        {temIdentificacao && (
+          <p>{nap.legalName}{nap.legalName && nap.taxId ? ' · ' : ''}{nap.taxId && `CNPJ ${nap.taxId}`}</p>
+        )}
+        <p>© {ano} {site.name}. Todos os direitos reservados.</p>
+      </div>
+
+      <a
+        href="https://www.bluedigitalhub.com.br"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group inline-flex items-center gap-3.5 shrink-0"
+        aria-label="Site desenvolvido pela BlueDigitalHub"
+      >
+        <span class="footer-label whitespace-nowrap">Site por</span>
+        <Image
+          src={bdhLogo}
+          alt="BlueDigitalHub"
+          width={130}
+          densities={[1, 2]}
+          format="webp"
+          quality={90}
+          loading="lazy"
+          decoding="async"
+          class="h-[17px] w-auto"
+        />
+      </a>
     </div>
   </div>
 </footer>

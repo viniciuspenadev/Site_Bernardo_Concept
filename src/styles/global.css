@@ -164,6 +164,42 @@ textarea.field-control { min-height: 120px; resize: vertical; }
 .form-status[data-tone='error'] { background: rgb(255 138 128 / .12); border: 1px solid rgb(255 138 128 / .4); color: #ffd0cc; }
 .form-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
+/* Rodape. Fundo um tom abaixo do primary-900 para separar da secao de contato,
+   que tem a mesma cor e ficava colada. */
+.site-footer { background: #06233f; }
+.footer-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #7cc4fa; }
+.footer-link { color: #e0effe; transition: color .2s; }
+.footer-link:hover { color: #fff; }
+.footer-link:focus-visible { outline-offset: 4px; }
+/* Numero de telefone: DM Sans com numerais tabulares. A serifada Playfair tem
+   numerais de altura variavel e o numero saia desalinhado. */
+.footer-phone {
+  display: inline-block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(2rem, 4.2vw, 2.75rem);
+  font-weight: 500;
+  letter-spacing: -.035em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  transition: color .2s;
+}
+.footer-phone:hover { color: #bae3ff; }
+
+/* Botao principal da pagina /whatsapp: alvo grande, verde do WhatsApp. */
+.btn-whatsapp-grande {
+  display: flex; align-items: center; justify-content: center; gap: .75rem;
+  width: 100%; min-height: 56px; padding: 1rem 2rem;
+  border-radius: 999px; background: #25D366; color: #06233f;
+  font-size: .95rem; font-weight: 700; letter-spacing: .04em;
+  box-shadow: 0 12px 30px rgb(37 211 102 / .22);
+  transition: background .2s, color .2s, transform .2s;
+}
+.btn-whatsapp-grande:hover { background: #1eb85a; color: #fff; }
+.btn-whatsapp-grande:active { transform: scale(.985); }
+.btn-whatsapp-grande:focus-visible { outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .btn-whatsapp-grande:active { transform: none; } }
+
 @media (max-width: 767px) {
   .wa-float { width: 56px; height: 56px; right: 1rem; bottom: 1rem; }
   .wa-float svg { width: 1.75rem; height: 1.75rem; }

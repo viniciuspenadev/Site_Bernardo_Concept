@@ -23,6 +23,9 @@ interface Props {
   pageConversion?: 'formulario' | null;
   /** Páginas fora da home não repetem o JSON-LD da home. */
   includeStructuredData?: boolean;
+  /** /whatsapp desliga o botão flutuante: ele é redundante lá e, em telas
+   *  estreitas, cobre a borda dos campos do formulário. */
+  floatingWhatsapp?: boolean;
 }
 const {
   title = site.title,
@@ -30,6 +33,7 @@ const {
   robots = seo.robots,
   pageConversion = null,
   includeStructuredData = true,
+  floatingWhatsapp = true,
 } = Astro.props;
 const canonical = seo.baseUrl ? new URL(Astro.url.pathname, `${seo.baseUrl}/`).href : undefined;
 ---
@@ -56,7 +60,7 @@ const canonical = seo.baseUrl ? new URL(Astro.url.pathname, `${seo.baseUrl}/`).h
   <body class="antialiased min-h-screen bg-secondary-50 text-secondary-900 selection:bg-primary-200 selection:text-secondary-900">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <slot />
-    <WhatsAppFloat />
+    {floatingWhatsapp && <WhatsAppFloat />}
     <ConversionEvents pageConversion={pageConversion} />
   </body>
 </html>

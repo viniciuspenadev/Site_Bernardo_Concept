@@ -4,8 +4,12 @@
 // Google Tag Assistant o reconheça e `gtag` fique disponível globalmente.
 //
 // Um único carregamento de gtag.js atende as duas contas: o Google Ads e o GA4
-// entram como dois `config`. Não é preciso repetir a tag <script src> do GA4 —
+// entram como dois `config`. Não é preciso repetir a tag de carregamento do GA4:
 // o snippet que o Google entrega faz isso só porque é gerado conta a conta.
+//
+// Atenção ao escrever comentários aqui: o scanner do Astro/Vite procura tags de
+// script no arquivo inteiro e não ignora comentários. Escrever a sequência
+// "menor-que + script" em um comentário quebra o `npm run dev` com PARSE_ERROR.
 import { googleAds, ga4Id } from '../data/tracking';
 
 const snippet = `

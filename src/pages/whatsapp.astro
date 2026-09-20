@@ -1,0 +1,111 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import LeadForm from '../components/LeadForm.astro';
+import WhatsAppIcon from '../components/WhatsAppIcon.astro';
+import { site, telHref, whatsappLink } from '../data/site';
+import { servicosWhatsapp, mensagemWhatsapp } from '../data/whatsapp-page';
+
+// Destino de sitelink do Google Ads. NÃO pode redirecionar sozinho: o Google
+// renderiza a página e segue redirecionamento, inclusive por JavaScript, e
+// reprovaria pelo mesmo motivo que reprova sitelink para outro domínio.
+// O href abaixo já vem pronto com a mensagem genérica, para funcionar sem
+// JavaScript; o script só o refina quando existe ?servico= na URL.
+const hrefPadrao = whatsappLink(mensagemWhatsapp());
+const opcoes = Object.values(servicosWhatsapp);
+---
+<Layout
+  title={`Fale no WhatsApp | ${site.name}`}
+  description="Fale com a Bernardo Tecnoglass no WhatsApp. Orçamento sem compromisso, resposta em até 1 hora útil."
+  robots="noindex, nofollow"
+  includeStructuredData={false}
+  floatingWhatsapp={false}
+>
+  <Navbar />
+
+  <main id="conteudo" class="bg-primary-900">
+
+    <!-- Primeira dobra: o botão precisa aparecer sem rolar em 360x640 -->
+    <section class="container mx-auto px-6 lg:px-12 max-w-xl pt-28 pb-12 text-center lg:pt-36">
+      <p class="footer-label mb-4">Atendimento direto</p>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-serif text-white leading-tight mb-4">
+        Fale com a {site.name} no WhatsApp
+      </h1>
+      <p class="text-primary-100 text-base font-light leading-relaxed mb-8">
+        Orçamento sem compromisso. Respondemos em até 1 hora útil.
+      </p>
+
+      <a
+        id="btn-whatsapp"
+        href={hrefPadrao}
+        target="_blank"
+        rel="noopener"
+        data-servico="geral"
+        aria-label="Abrir conversa no WhatsApp com a Bernardo Tecnoglass para pedir um orçamento"
+        class="btn-whatsapp-grande"
+      >
+        <WhatsAppIcon class="w-6 h-6 shrink-0" />
+        <span>Abrir conversa no WhatsApp</span>
+      </a>
+
+      <p class="mt-6">
+        <a href={telHref} class="inline-flex items-center gap-2.5 text-sm font-bold tracking-wide text-white hover:text-primary-200 transition-colors">
+          <Icon name="phone" class="w-4 h-4 shrink-0" />Ou ligue: {site.phoneDisplay}
+        </a>
+      </p>
+    </section>
+
+    <!-- Segunda porta: formulário curto -->
+    <section class="container mx-auto px-6 lg:px-12 max-w-xl pb-20">
+      <div class="flex items-center gap-4 pt-4">
+        <span class="h-px flex-1 shrink bg-white/15"></span>
+        <p class="text-center text-xs uppercase tracking-widest text-primary-300">
+          Prefere que a gente entre em contato?
+        </p>
+        <span class="h-px flex-1 shrink bg-white/15"></span>
+      </div>
+
+      <LeadForm
+        variant="curto"
+        origem="pagina-whatsapp"
+        servicos={opcoes}
+        class="mt-8 text-left"
+      />
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline define:vars={{ servicos: servicosWhatsapp, numero: site.whatsapp }}>
+  (function () {
+    var param = new URLSearchParams(location.search).get('servico') || '';
+    var nome = Object.prototype.hasOwnProperty.call(servicos, param) ? servicos[param] : null;
+    var mensagem = nome
+      ? 'Olá! Vim pelo site e gostaria de um orçamento de ' + nome + '.'
+      : 'Olá! Vim pelo site e gostaria de um orçamento.';
+
+    var botao = document.getElementById('btn-whatsapp');
+    if (botao) {
+      botao.href = 'https://wa.me/' + numero + '?text=' + encodeURIComponent(mensagem);
+      botao.dataset.servico = nome ? param : 'geral';
+    }
+
+    // Deixa o serviço já escolhido no formulário, quando veio na URL.
+    var select = document.getElementById('lead-servico');
+    if (select && nome) {
+      for (var i = 0; i < select.options.length; i++) {
+        if (select.options[i].value === nome) { select.selectedIndex = i; break; }
+      }
+    }
+
+    // Apenas medição de passagem, no GA4. NENHUMA conversão é disparada aqui:
+    // o clique no botão já é capturado pelo listener global de links wa.me, e um
+    // disparo próprio faria o mesmo lead contar duas vezes no Google Ads.
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'ver_pagina_whatsapp', { servico: nome ? param : 'geral' });
+    }
+  })();
+</script>

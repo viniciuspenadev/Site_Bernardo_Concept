@@ -100,7 +100,8 @@ function doPost(e) {
     var servico = texto(dados.servico);
     var cidade = texto(dados.cidade);
 
-    if (!nome || !whatsapp || !servico || !cidade) {
+    // A cidade não entra aqui: o formulário curto da página /whatsapp não pergunta.
+    if (!nome || !whatsapp || !servico) {
       return resposta({ success: false, message: 'Campos obrigatórios faltando.' });
     }
 
