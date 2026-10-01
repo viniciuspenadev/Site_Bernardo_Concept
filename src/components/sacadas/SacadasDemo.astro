@@ -1,0 +1,42 @@
+---
+import Icon from '../Icon.astro';
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import { whatsappLink } from '../../data/site';
+import { sacadasDemo, sacadasMensagens } from '../../data/sacadas';
+
+// Mesmo vídeo da home, mas controlado pelo visitante: arrastar a cena ou o controle
+// abre e fecha a sacada. Não prende a rolagem da página, como faz a versão da home.
+---
+<section id="demonstracao" class="lp-section lp-dark" aria-labelledby="demo-titulo">
+  <div class="lp-demo-grid container mx-auto px-6 lg:px-12">
+    <div class="lp-demo-head">
+      <p class="lp-eyebrow lp-eyebrow-light">Veja como funciona</p>
+      <h2 id="demo-titulo" class="lp-h2">Fechada, ela protege. <em>Aberta, libera a vista.</em></h2>
+      <p class="lp-lead mt-6">Arraste a imagem ou use o controle para abrir a sacada. As folhas de vidro correm pelos trilhos e se recolhem nas laterais. Dá para abrir tudo ou só uma parte.</p>
+    </div>
+
+    <div class="lp-demo-media" data-demo>
+      <div class="lp-demo-stage" data-demo-stage>
+        <video data-demo-film data-src="/media/sacada-scroll-v1.mp4" muted playsinline preload="none" poster="/media/sacada-scroll-poster-v1.jpg" aria-hidden="true" tabindex="-1"></video>
+        <p class="lp-demo-state" data-demo-state aria-hidden="true">Fechada</p>
+        <p class="lp-demo-hint" data-demo-hint aria-hidden="true"><Icon name="slide" class="w-4 h-4" />Arraste para abrir</p>
+      </div>
+      <div class="lp-demo-controls" data-demo-controls hidden>
+        <label for="demo-abertura">Abertura da sacada</label>
+        <input id="demo-abertura" class="lp-range" type="range" min="0" max="100" step="1" value="0" aria-valuetext="Fechada" data-demo-range />
+        <button type="button" class="lp-btn lp-btn-ghost lp-btn-sm" aria-pressed="false" data-demo-toggle>Abrir sacada</button>
+      </div>
+      <p class="lp-demo-error" data-demo-error hidden>Não foi possível carregar a demonstração. A imagem mostra a sacada fechada.</p>
+    </div>
+
+    <div class="lp-demo-body">
+      <ul class="lp-demo-list">
+        {sacadasDemo.map(item => <li><span class="lp-check-dot"><Icon name="check" class="w-3.5 h-3.5" /></span>{item}</li>)}
+      </ul>
+      <a class="lp-btn lp-btn-wa mt-9" href={whatsappLink(sacadasMensagens.geral)} target="_blank" rel="noopener" data-servico="sacadas-demonstracao">
+        <WhatsAppIcon class="w-5 h-5" />Quero na minha sacada
+      </a>
+    </div>
+  </div>
+</section>
+<script src="../../scripts/balcony-slider.ts"></script>

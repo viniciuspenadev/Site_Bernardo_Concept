@@ -61,7 +61,7 @@ const tituloLocal = temEndereco ? 'Nossa Fábrica' : 'Atendimento';
       <div>
         <h2 class="footer-label mb-5">Soluções</h2>
         <ul class="space-y-3 text-sm text-primary-200">
-          {serviceGroups.map(grupo => <li>{grupo.title}</li>)}
+          {serviceGroups.map(grupo => <li>{'pagina' in grupo ? <a href={grupo.pagina.href} class="footer-link">{grupo.title}</a> : grupo.title}</li>)}
         </ul>
       </div>
 

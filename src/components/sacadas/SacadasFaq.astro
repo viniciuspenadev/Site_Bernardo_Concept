@@ -1,0 +1,29 @@
+---
+import Icon from '../Icon.astro';
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import { whatsappLink } from '../../data/site';
+import { sacadasDuvidas, sacadasMensagens } from '../../data/sacadas';
+
+// As mesmas perguntas alimentam o JSON-LD FAQPage (sacadasStructuredData, em seo.ts):
+// o texto do dado estruturado precisa ser igual ao visível na página.
+---
+<section id="duvidas" class="lp-section lp-soft" aria-labelledby="duvidas-titulo">
+  <div class="lp-faq-grid container mx-auto px-6 lg:px-12">
+    <div class="lp-faq-aside">
+      <p class="lp-eyebrow">Dúvidas frequentes</p>
+      <h2 id="duvidas-titulo" class="lp-h2">Antes de envidraçar, <em>vale saber.</em></h2>
+      <p class="lp-lead mt-6">Não encontrou a sua dúvida? Pergunte pelo WhatsApp. Respondemos em até 1 hora útil.</p>
+      <a class="lp-btn lp-btn-outline mt-8" href={whatsappLink(sacadasMensagens.duvida)} target="_blank" rel="noopener" data-servico="sacadas-duvidas">
+        <WhatsAppIcon class="w-5 h-5" />Tirar dúvida no WhatsApp
+      </a>
+    </div>
+    <div class="lp-faq-list">
+      {sacadasDuvidas.map((item, index) => (
+        <details class="lp-faq-item" data-faq-item open={index === 0}>
+          <summary>{item.pergunta}<span class="lp-faq-toggle" aria-hidden="true"><Icon name="plus" class="w-4 h-4" /></span></summary>
+          <p class="lp-faq-answer">{item.resposta}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

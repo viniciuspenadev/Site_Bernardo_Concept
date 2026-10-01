@@ -1,6 +1,8 @@
 ---
-import { ArrowRight, ChevronLeft, ChevronRight, Menu, X, PenTool, Sun, Layers, Sparkles, MessageCircle, Pause, Play, PanelsTopLeft, Fence, BuildingComplex, ArrowUpRight, Phone, Star, Check, CircleAlert } from '@lucide/astro';
-const icons = { arrow: ArrowRight, left: ChevronLeft, right: ChevronRight, menu: Menu, close: X, pen: PenTool, sun: Sun, layers: Layers, sparkles: Sparkles, message: MessageCircle, pause: Pause, play: Play, window: PanelsTopLeft, gate: Fence, building: BuildingComplex, expand: ArrowUpRight, phone: Phone, star: Star, check: Check, alert: CircleAlert };
+import { ArrowRight, ChevronLeft, ChevronRight, Menu, X, PenTool, Sun, Layers, Sparkles, MessageCircle, Pause, Play, PanelsTopLeft, Fence, BuildingComplex, ArrowUpRight, Phone, Star, Check, CircleAlert, MoveHorizontal, VolumeX, Ruler, FileText, Hammer, Wrench, MapPin, Clock, BadgeCheck, Plus, RotateCcw, ZoomIn } from '@lucide/astro';
+const icons = { arrow: ArrowRight, left: ChevronLeft, right: ChevronRight, menu: Menu, close: X, pen: PenTool, sun: Sun, layers: Layers, sparkles: Sparkles, message: MessageCircle, pause: Pause, play: Play, window: PanelsTopLeft, gate: Fence, building: BuildingComplex, expand: ArrowUpRight, phone: Phone, star: Star, check: Check, alert: CircleAlert,
+  // Página de sacadas.
+  slide: MoveHorizontal, quiet: VolumeX, ruler: Ruler, file: FileText, hammer: Hammer, wrench: Wrench, pin: MapPin, clock: Clock, badge: BadgeCheck, plus: Plus, restart: RotateCcw, zoom: ZoomIn };
 interface Props { name: keyof typeof icons; class?: string; }
 const { name, class: className = 'w-5 h-5' } = Astro.props;
 const Symbol = icons[name];

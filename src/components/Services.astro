@@ -3,6 +3,7 @@ import { serviceGroups } from '../data/content';
 import { servicePhotos } from '../data/service-photos';
 import Photo from './Photo.astro';
 import WhatsAppCta from './WhatsAppCta.astro';
+import Icon from './Icon.astro';
 ---
 <section id="servicos" class="bg-white scroll-mt-24" aria-label="Soluções Bernardo Tecnoglass">
   <div class="lg:hidden container mx-auto px-4 py-20">
@@ -16,6 +17,7 @@ import WhatsAppCta from './WhatsAppCta.astro';
         <p class="text-secondary-600 font-light text-lg leading-relaxed mb-6">{group.description}</p>
         <ul class="space-y-3">{group.items.map(item => <li class="text-sm text-secondary-600 border-b border-secondary-100 pb-3">{item}</li>)}</ul>
         <WhatsAppCta servico={group.id} message={group.whatsappMessage} label={group.ctaLabel} class="mt-8" />
+        {'pagina' in group && <p class="mt-6"><a href={group.pagina.href} class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-primary-900 hover:text-primary-600"><span class="border-b-2 border-primary-300 pb-1">{group.pagina.label}</span><Icon name="arrow" class="w-4 h-4" /></a></p>}
       </article>)}
     </div>
   </div>
@@ -33,6 +35,7 @@ import WhatsAppCta from './WhatsAppCta.astro';
           <p class="text-secondary-600 font-light text-xl leading-relaxed max-w-lg mb-6">{group.description}</p>
           <ul class="space-y-3">{group.items.map(item => <li data-service-name class="text-sm text-secondary-600 border-b border-secondary-100 pb-3">{item}</li>)}</ul>
           <WhatsAppCta servico={group.id} message={group.whatsappMessage} label={group.ctaLabel} class="mt-10 self-start" />
+          {'pagina' in group && <a href={group.pagina.href} class="mt-6 self-start inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-primary-900 hover:text-primary-600"><span class="border-b-2 border-primary-300 pb-1">{group.pagina.label}</span><Icon name="arrow" class="w-4 h-4" /></a>}
         </article>)}
       </div>
     </div>

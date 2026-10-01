@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+
+// Carrossel de rolagem contínua, usado na home (projetos) e na página de sacadas (obras).
+// Os cartões entram pelo slot, cada um com data-carrossel-slide e, se houver filtros,
+// data-filtros="id-a id-b". As abas de filtro ficam fora do componente: são botões com
+// data-carrossel-filtro="id" ("" = todos) e aria-controls apontando para o id do trilho.
+// Comportamento em scripts/carrossel-continuo.ts; visual em .carrossel (global.css).
+interface Props {
+  /** id do trilho, usado pelo aria-controls das abas e das setas. */
+  id: string;
+  label: string;
+  /** Palavra usada no aviso de filtro para leitores de tela: "3 obras — Perfil preto". */
+  itemSingular: string;
+  itemPlural: string;
+  /** Segundos que um cartão leva para passar. Maior = mais lento. */
+  segundosPorCartao?: number;
+}
+const { id, label, itemSingular, itemPlural, segundosPorCartao = 10 } = Astro.props;
+---
+<div class="carrossel" data-carrossel data-item-singular={itemSingular} data-item-plural={itemPlural} data-segundos-por-cartao={segundosPorCartao}>
+  <div class="carrossel-viewport" data-carrossel-viewport>
+    <div id={id} class="carrossel-trilho" role="region" aria-roledescription="carrossel" aria-label={label} data-carrossel-trilho>
+      <slot />
+    </div>
+  </div>
+  <button type="button" class="carrossel-seta carrossel-seta-anterior" data-carrossel-anterior aria-label="Voltar o carrossel" aria-controls={id}><Icon name="left" class="w-6 h-6" /></button>
+  <button type="button" class="carrossel-seta carrossel-seta-proxima" data-carrossel-proxima aria-label="Avançar o carrossel" aria-controls={id}><Icon name="right" class="w-6 h-6" /></button>
+  <p class="sr-only" role="status" data-carrossel-status></p>
+  <p class="carrossel-vazio" data-carrossel-vazio hidden>Nada encontrado nesta categoria.</p>
+</div>
+<script src="../scripts/carrossel-continuo.ts"></script>

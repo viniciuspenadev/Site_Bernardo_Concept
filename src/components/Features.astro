@@ -1,5 +1,6 @@
 ---
 import '../styles/balcony.css';
+import { sacadasPath } from '../data/sacadas';
 ---
 <section id="diferenciais" class="balcony-story" data-balcony-story aria-labelledby="balcony-title">
   <div class="balcony-screen" data-balcony-screen>
@@ -15,7 +16,7 @@ import '../styles/balcony.css';
     <div class="balcony-message balcony-message-end" data-balcony-message="2" aria-hidden="true" inert>
       <h3>Sua sacada. <em>Novas possibilidades.</em></h3>
       <p>Envidraçamento de sacadas na Grande São Paulo.</p>
-      <a href="#servicos" class="balcony-cta">Conheça nossas soluções <span aria-hidden="true">↗</span></a>
+      <a href={sacadasPath} class="balcony-cta">Conheça o envidraçamento <span aria-hidden="true">↗</span></a>
     </div>
     <div class="balcony-progress" aria-hidden="true"><span data-balcony-progress></span></div>
   </div>

@@ -11,12 +11,15 @@ interface Props {
   origem?: string;
   /** Opções do select. Padrão: a lista completa de serviços. */
   servicos?: readonly string[];
+  /** Opção já marcada no select. Usado na página de sacadas. */
+  servicoPadrao?: string;
   class?: string;
 }
 const {
   variant = 'completo',
   origem,
   servicos = leadServices,
+  servicoPadrao,
   class: className = 'mx-auto mt-12 max-w-2xl text-left',
 } = Astro.props;
 
@@ -49,7 +52,7 @@ const fallbackMessage = 'Olá! Tentei enviar o formulário do site e não conseg
       <label class="field-label" for="lead-servico">Serviço *</label>
       <select class="field-control" id="lead-servico" name="servico" required aria-describedby="erro-servico">
         <option value="">Selecione o serviço</option>
-        {servicos.map(service => <option value={service}>{service}</option>)}
+        {servicos.map(service => <option value={service} selected={service === servicoPadrao}>{service}</option>)}
       </select>
       <p class="field-error" id="erro-servico" role="alert">Escolha o serviço desejado.</p>
     </div>

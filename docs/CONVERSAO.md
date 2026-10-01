@@ -19,6 +19,7 @@ o que precisa ser configurado antes de subir a campanha e como validar cada item
 | Página de sitelink do WhatsApp | `src/pages/whatsapp.astro` + `src/data/whatsapp-page.ts` |
 | Listener único de conversão, no fim do `<body>` | `src/components/ConversionEvents.astro` |
 | NAP e JSON-LD `LocalBusiness` | `src/data/site.ts` (`nap`) e `src/data/seo.ts` |
+| Landing page de sacadas: CTAs, orçamento guiado e barra fixa no celular | `src/pages/envidracamento-de-sacadas.astro` e `src/components/sacadas/` ([LP-SACADAS.md](LP-SACADAS.md)) |
 
 Número oficial usado em todos os pontos: **+55 11 91877-0752** (`wa.me/5511918770752`, `tel:+5511918770752`),
 definido uma única vez em `src/data/site.ts`.
@@ -31,10 +32,15 @@ definido uma única vez em `src/data/site.ts`.
 | Clique em link `tel:` | `conversion` (`AW-18287438973/Jz95CL-Us_scEP3YkJBE`, value 1.0 BRL) + `contato_telefone` |
 | Carregamento de `/obrigado` | `conversion` (`AW-18287438973/yaiGCMKUs_scEP3YkJBE`, value 1.0 BRL) + `solicitar_cotacao` |
 | Carregamento de `/whatsapp` | `ver_pagina_whatsapp` com `servico` — **somente GA4, nenhuma conversão** |
+| Orçamento guiado, demonstração e galeria de obras da página de sacadas | `orcamento_guiado_inicio`, `orcamento_guiado_passo`, `orcamento_guiado_resumo`, `orcamento_guiado_formulario`, `demo_sacada_interacao`, `obra_sacada_abrir` — **somente GA4, nenhuma conversão** |
 
 Valores de `data-servico` em uso: `hero`, `esquadrias`, `portoes`, `vidros`, `sacadas`,
-`flutuante`, `contato`, `rodape`, `rodape-lista`, `obrigado`, `formulario-falhou`, e os
-sete valores de `?servico=` da página `/whatsapp`.
+`flutuante`, `contato`, `rodape`, `rodape-lista`, `obrigado`, `formulario-falhou`, os
+sete valores de `?servico=` da página `/whatsapp` e, na página de sacadas,
+`sacadas-cabecalho`, `sacadas-topo`, `sacadas-guiado`, `sacadas-obras`, `sacadas-obra`,
+`sacadas-demonstracao`,
+`sacadas-processo`, `sacadas-manutencao`, `sacadas-acustica`, `sacadas-duvidas`,
+`sacadas-final` e `sacadas-barra`.
 Links sem `data-servico` enviam `servico: 'geral'`.
 
 ### Página `/whatsapp` — destino de sitelink
@@ -183,6 +189,11 @@ direta: basta substituir o arquivo importado e atualizar o `alt`.
 Arquivos novos vão em `src/assets/tecnoglass/`. O Astro gera WebP e versões responsivas
 automaticamente — basta subir o original em boa resolução (JPG ou PNG).
 
+**Atualização de 01/10/2026:** chegaram fotos reais de sacadas, usadas no portfólio da página
+de sacadas (`src/assets/tecnoglass/sacadas/obras/`, ver [LP-SACADAS.md](LP-SACADAS.md)). A
+home continua com as imagens geradas; a de sacadas em `service-photos.ts` e no carrossel pode
+ser trocada por uma dessas fotos.
+
 ## 3. Como validar
 
 ### 3.1 Tag do Google
@@ -242,12 +253,19 @@ Confira o parâmetro `servico` de cada CTA.
 Botão flutuante: 60px no desktop, 56px no mobile, sempre no canto inferior direito, acima de
 todas as seções (`z-index: 90`). No mobile o telefone aparece como ícone no cabeçalho fixo.
 
+Na página de sacadas o botão flutuante fica desligado. No celular, uma barra fixa com
+WhatsApp e telefone aparece depois do topo e some ao chegar no formulário; no desktop, o
+cabeçalho fixo traz o botão de orçamento.
+
 ## 4. Observações
 
 - A seção SOLUÇÕES tem **quatro** blocos (esquadrias, portões, vidros e sacadas), não três.
   Todos receberam CTA próprio, com `data-servico` igual ao id do bloco.
-- O verde `#25D366` é usado apenas no botão flutuante. Os demais CTAs de WhatsApp seguem a
-  paleta do site (azul `#0a3560` sobre fundo claro, pílula branca sobre fundo escuro).
+- Na home, o verde `#25D366` é usado apenas no botão flutuante. Os demais CTAs de WhatsApp
+  seguem a paleta do site (azul `#0a3560` sobre fundo claro, pílula branca sobre fundo escuro).
+  Nas páginas de conversão (`/whatsapp` e a de sacadas), o verde marca as ações principais
+  que abrem o WhatsApp, sempre com texto escuro: texto branco sobre esse verde não tem
+  contraste suficiente.
 - O carrossel do hero avança sozinho a cada 7s. O botão de pausa foi removido e o ponteiro do
   mouse não interrompe mais o autoplay; o avanço ainda para quando o teclado está dentro do
   hero, quando a aba fica oculta e sob `prefers-reduced-motion`.

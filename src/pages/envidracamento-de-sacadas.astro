@@ -1,0 +1,42 @@
+---
+import '../styles/sacadas.css';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import SacadasHeader from '../components/sacadas/SacadasHeader.astro';
+import SacadasHero from '../components/sacadas/SacadasHero.astro';
+import SacadasObras from '../components/sacadas/SacadasObras.astro';
+import SacadasDemo from '../components/sacadas/SacadasDemo.astro';
+import SacadasProcess from '../components/sacadas/SacadasProcess.astro';
+import SacadasMore from '../components/sacadas/SacadasMore.astro';
+import SacadasTrust from '../components/sacadas/SacadasTrust.astro';
+import SacadasFaq from '../components/sacadas/SacadasFaq.astro';
+import SacadasContact from '../components/sacadas/SacadasContact.astro';
+import StickyCta from '../components/sacadas/StickyCta.astro';
+import { sacadasSeo } from '../data/sacadas';
+import { sacadasStructuredData } from '../data/seo';
+
+// Landing page de envidraçamento de sacadas: destino dos anúncios de sacada e página
+// de serviço para a busca orgânica. Estrutura e decisões em docs/LP-SACADAS.md.
+// O botão flutuante fica desligado: no celular a barra fixa (StickyCta) faz o papel
+// dele, e no desktop o cabeçalho fixo já traz o botão de orçamento.
+---
+<Layout title={sacadasSeo.title} description={sacadasSeo.description} floatingWhatsapp={false}>
+  <!-- Marca o documento antes de qualquer seção ser desenhada: os blocos que só
+       funcionam com JavaScript (orçamento guiado, dica de arrastar, galeria de obras)
+       dependem disso. -->
+  <script is:inline>document.documentElement.classList.add('js');</script>
+  <SacadasHeader />
+  <main id="conteudo" class="lp">
+    <SacadasHero />
+    <SacadasObras />
+    <SacadasDemo />
+    <SacadasProcess />
+    <SacadasMore />
+    <SacadasTrust />
+    <SacadasFaq />
+    <SacadasContact />
+  </main>
+  <Footer />
+  <StickyCta />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(sacadasStructuredData).replace(/</g, '\\u003c')} />
+</Layout>

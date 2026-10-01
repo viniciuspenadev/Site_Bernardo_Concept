@@ -1,0 +1,37 @@
+---
+import HeroPhoto from '../HeroPhoto.astro';
+import Icon from '../Icon.astro';
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import QuoteWizard from './QuoteWizard.astro';
+import { site, telHref, whatsappLink } from '../../data/site';
+import { sacadasGarantias, sacadasMensagens } from '../../data/sacadas';
+// Desktop: primeiro quadro do vídeo da sacada (public/media/sacada-scroll-v1.mp4).
+// Celular: a mesma cena vertical usada no portfólio, com as folhas recolhidas.
+import desktop from '../../assets/tecnoglass/sacadas/sacada-fechada-desktop-v1.jpg';
+import mobile from '../../assets/tecnoglass/portfolio/sacada-premium-v1.png';
+---
+<!-- data-sticky-trigger: a barra fixa do celular só aparece depois que todo o topo,
+     com o orçamento guiado, sai da tela. Antes disso ela competiria com o assistente. -->
+<section class="lp-hero" aria-labelledby="lp-titulo" data-sticky-trigger>
+  <HeroPhoto desktop={desktop} mobile={mobile} alt="Sacada envidraçada com painéis de vidro do piso ao teto e vista para a cidade" eager />
+  <div class="lp-hero-shade" aria-hidden="true"></div>
+  <div class="lp-hero-grid container mx-auto px-6 lg:px-12">
+    <div>
+      <p class="lp-eyebrow lp-eyebrow-light">{site.name} · Sacadas</p>
+      <h1 id="lp-titulo" class="lp-hero-title">Envidraçamento de sacadas <em>na Grande São Paulo.</em></h1>
+      <p class="lp-hero-lead">Feche a sacada com vidro e aproveite o espaço o ano inteiro: proteção contra chuva, vento e poeira, sem perder a vista.</p>
+      <ul class="lp-checks">
+        {sacadasGarantias.map(item => <li><span class="lp-check-dot"><Icon name="check" class="w-3.5 h-3.5" /></span>{item}</li>)}
+      </ul>
+      <div class="lp-hero-actions">
+        <a class="lp-btn lp-btn-wa" href={whatsappLink(sacadasMensagens.geral)} target="_blank" rel="noopener" data-servico="sacadas-topo">
+          <WhatsAppIcon class="w-5 h-5" />Pedir orçamento no WhatsApp
+        </a>
+        <a class="lp-btn lp-btn-ghost" href={telHref} aria-label={`Ligar para a ${site.name}: ${site.phoneDisplay}`}>
+          <Icon name="phone" class="w-5 h-5" />{site.phoneDisplay}
+        </a>
+      </div>
+    </div>
+    <QuoteWizard />
+  </div>
+</section>

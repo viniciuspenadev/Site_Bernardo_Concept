@@ -1,0 +1,109 @@
+---
+import { getImage } from 'astro:assets';
+import CarrosselContinuo from '../CarrosselContinuo.astro';
+import Icon from '../Icon.astro';
+import ProjectCard from '../ProjectCard.astro';
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import { whatsappLink } from '../../data/site';
+import { sacadasMensagens } from '../../data/sacadas';
+import { sacadasObras, filtrosObras, filtrosDaObra, mensagemObra } from '../../data/sacadas-obras';
+
+// Carrossel de rolagem contínua, o mesmo da home (CarrosselContinuo), com os cartões
+// ProjectCard. Cada cartão é um link para a foto grande: com JavaScript abre a galeria
+// ampliada (obras-lightbox.ts); sem JavaScript, abre a foto direto no navegador.
+const grandes = await Promise.all(sacadasObras.map(obra => getImage({ src: obra.src, width: obra.src.width, format: 'webp', quality: 82 })));
+const total = sacadasObras.length;
+const filtros = [
+  { id: '', rotulo: 'Todas' },
+  ...filtrosObras.filter(filtro => sacadasObras.some(obra => filtrosDaObra(obra).includes(filtro.id))),
+];
+---
+<section id="obras" class="lp-section lp-soft" aria-labelledby="obras-titulo">
+  <div class="lp-obras-topo container mx-auto px-6 lg:px-12">
+    <div class="lp-obras-head">
+      <div>
+        <p class="lp-eyebrow">Obras entregues</p>
+        <h2 id="obras-titulo" class="lp-h2">Veja sacadas que <em>já envidraçamos.</em></h2>
+      </div>
+      <p class="lp-lead">Fotos de obras entregues, algumas no dia da instalação, ainda com os adesivos nos vidros. Perfis pretos ou brancos, sacadas em L e vãos de ponta a ponta: cada projeto segue o padrão do prédio.</p>
+    </div>
+    {filtros.length > 1 && (
+      <div role="group" aria-label="Filtrar obras" class="lp-obras-filtros bg-white p-1.5 rounded-full shadow-soft inline-flex flex-nowrap gap-1 max-w-full overflow-x-auto hide-scrollbar">
+        {filtros.map((filtro, index) => (
+          <button type="button" data-carrossel-filtro={filtro.id} aria-pressed={index === 0 ? 'true' : 'false'} aria-controls="obras-trilho" class="filter-button px-4 md:px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-colors whitespace-nowrap shrink-0">{filtro.rotulo}</button>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <!-- Fora do container: o carrossel ocupa a largura toda e some nas bordas da tela. -->
+  <CarrosselContinuo id="obras-trilho" label="Obras entregues" itemSingular="obra" itemPlural="obras">
+    {sacadasObras.map((obra, index) => (
+      <div
+        class="flex-none basis-[280px] sm:basis-[320px] md:basis-[400px]"
+        data-carrossel-slide
+        data-filtros={filtrosDaObra(obra).join(' ')}
+        role="group"
+        aria-roledescription="slide"
+        aria-label={`${index + 1} de ${total}`}
+      >
+        <a
+          class="lp-obra-card"
+          href={grandes[index].src}
+          data-obra
+          data-index={index}
+          data-slug={obra.slug}
+          data-titulo={obra.titulo}
+          data-texto={obra.texto}
+          data-tags={obra.tags.join(' · ')}
+          data-alt={obra.alt}
+          data-largura={obra.src.width}
+          data-altura={obra.src.height}
+          data-whatsapp={whatsappLink(mensagemObra(obra.titulo))}
+          aria-label={`${obra.titulo}: ampliar foto`}
+        >
+          <ProjectCard project={{ id: index, title: obra.titulo, category: obra.tags[0] ?? 'Sacada', description: obra.texto, image: obra.src, alt: obra.alt, position: obra.posicao }} />
+          <span class="lp-obra-zoom" aria-hidden="true"><Icon name="zoom" class="w-4 h-4" /></span>
+        </a>
+      </div>
+    ))}
+  </CarrosselContinuo>
+
+  <div class="container mx-auto px-6 lg:px-12">
+    <div class="lp-obras-bar">
+      <p><strong>Quer um resultado assim na sua sacada?</strong> Mande uma foto do seu espaço pelo WhatsApp.</p>
+      <a class="lp-btn lp-btn-wa" href={whatsappLink(sacadasMensagens.obras)} target="_blank" rel="noopener" data-servico="sacadas-obras">
+        <WhatsAppIcon class="w-5 h-5" />Pedir orçamento
+      </a>
+    </div>
+  </div>
+
+  <!-- Galeria ampliada. O link do WhatsApp cita a obra que está na tela. -->
+  <dialog class="lp-lightbox" data-lightbox aria-labelledby="galeria-titulo">
+    <div class="lp-lightbox-frame">
+      <div class="lp-lightbox-top">
+        <p class="lp-lightbox-count" data-lightbox-count aria-hidden="true"></p>
+        <button type="button" class="lp-lightbox-close" data-lightbox-close aria-label="Fechar galeria" autofocus><Icon name="close" class="w-6 h-6" /></button>
+      </div>
+      <div class="lp-lightbox-stage" data-lightbox-stage>
+        <!-- draggable="false": sem isso, arrastar a foto com o mouse inicia o arrasto nativo
+             de imagem do navegador, que cancela o gesto de deslizar. -->
+        <img class="lp-lightbox-img" data-lightbox-img src={grandes[0]?.src} alt="" loading="lazy" decoding="async" draggable="false" />
+        <button type="button" class="lp-lightbox-nav lp-lightbox-prev" data-lightbox-prev aria-label="Foto anterior"><Icon name="left" class="w-6 h-6" /></button>
+        <button type="button" class="lp-lightbox-nav lp-lightbox-next" data-lightbox-next aria-label="Próxima foto"><Icon name="right" class="w-6 h-6" /></button>
+      </div>
+      <div class="lp-lightbox-info">
+        <div aria-live="polite">
+          <p class="sr-only" data-lightbox-position></p>
+          <h3 id="galeria-titulo" class="lp-lightbox-title" data-lightbox-title>Obras entregues</h3>
+          <p class="lp-lightbox-text" data-lightbox-text></p>
+          <p class="lp-lightbox-tags" data-lightbox-tags></p>
+        </div>
+        <a class="lp-btn lp-btn-wa" href={whatsappLink(sacadasMensagens.obras)} target="_blank" rel="noopener" data-servico="sacadas-obra" data-lightbox-whatsapp>
+          <WhatsAppIcon class="w-5 h-5" />Quero uma assim
+        </a>
+      </div>
+    </div>
+  </dialog>
+</section>
+<script src="../../scripts/obras-lightbox.ts"></script>

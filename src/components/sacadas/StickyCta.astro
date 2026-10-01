@@ -1,0 +1,41 @@
+---
+import Icon from '../Icon.astro';
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import { site, telHref, whatsappLink } from '../../data/site';
+import { sacadasMensagens } from '../../data/sacadas';
+
+// Barra fixa do celular. Substitui o botão flutuante nesta página: aparece quando o
+// topo da página sai da tela e some ao chegar no formulário, que ela cobriria.
+// Começa escondida e fora da navegação por teclado (inert) até o script mostrar.
+---
+<div class="lp-sticky" data-sticky-cta data-visible="false" aria-hidden="true" inert>
+  <a class="lp-btn lp-btn-wa" href={whatsappLink(sacadasMensagens.geral)} target="_blank" rel="noopener" data-servico="sacadas-barra">
+    <WhatsAppIcon class="w-5 h-5" />Orçamento no WhatsApp
+  </a>
+  <a class="lp-sticky-phone" href={telHref} aria-label={`Ligar para a ${site.name}: ${site.phoneDisplay}`}><Icon name="phone" class="w-5 h-5" /></a>
+</div>
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-sticky-cta]');
+  const trigger = document.querySelector('[data-sticky-trigger]');
+  const stop = document.querySelector('[data-sticky-stop]');
+  if (bar && trigger) {
+    let passedTrigger = false;
+    let reachedStop = false;
+    const update = () => {
+      const visible = passedTrigger && !reachedStop;
+      bar.dataset.visible = String(visible);
+      bar.setAttribute('aria-hidden', String(!visible));
+      bar.inert = !visible;
+    };
+    new IntersectionObserver(([entry]) => {
+      passedTrigger = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+      update();
+    }).observe(trigger);
+    if (stop) {
+      new IntersectionObserver(([entry]) => {
+        reachedStop = entry.isIntersecting || entry.boundingClientRect.top < 0;
+        update();
+      }).observe(stop);
+    }
+  }
+</script>

@@ -1,0 +1,35 @@
+---
+import Icon from '../Icon.astro';
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import { whatsappLink } from '../../data/site';
+import { sacadasEtapas, sacadasMensagens } from '../../data/sacadas';
+---
+<section id="como-funciona" class="lp-section" aria-labelledby="processo-titulo">
+  <div class="container mx-auto px-6 lg:px-12">
+    <div class="max-w-2xl">
+      <p class="lp-eyebrow">Como funciona</p>
+      <h2 id="processo-titulo" class="lp-h2">Do primeiro contato <em>à sacada pronta.</em></h2>
+    </div>
+    <ol class="lp-steps">
+      {sacadasEtapas.map((etapa, index) => (
+        <li class="lp-step">
+          <div class="lp-step-top">
+            <span class="lp-step-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <span class="lp-icon-badge"><Icon name={etapa.icone} class="w-6 h-6" /></span>
+          </div>
+          <h3>{etapa.titulo}</h3>
+          <p>{etapa.texto}</p>
+        </li>
+      ))}
+    </ol>
+    <div class="lp-process-foot">
+      <p class="lp-callout">
+        <Icon name="building" class="w-6 h-6" />
+        <span><strong>Mora em condomínio?</strong> O envidraçamento precisa seguir o padrão aprovado pelo prédio, com a mesma cor de perfis e de vidro. Se o seu já tem um padrão, o orçamento segue esse padrão.</span>
+      </p>
+      <a class="lp-btn lp-btn-navy shrink-0" href={whatsappLink(sacadasMensagens.geral)} target="_blank" rel="noopener" data-servico="sacadas-processo">
+        <WhatsAppIcon class="w-5 h-5" />Começar pelo WhatsApp
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,38 @@
+---
+import Icon from '../Icon.astro';
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import { whatsappLink } from '../../data/site';
+import { sacadasManutencao, sacadasMensagens } from '../../data/sacadas';
+---
+<section id="manutencao" class="lp-section lp-soft" aria-labelledby="mais-titulo">
+  <div class="container mx-auto px-6 lg:px-12">
+    <div class="max-w-2xl">
+      <p class="lp-eyebrow">Também cuidamos de</p>
+      <h2 id="mais-titulo" class="lp-h2">Manutenção e <em>soluções acústicas.</em></h2>
+    </div>
+    <div class="lp-more-grid">
+      <article class="lp-more-card">
+        <span class="lp-icon-badge"><Icon name="wrench" class="w-6 h-6" /></span>
+        <h3>Manutenção de sacadas</h3>
+        <p>Para sacadas que já estão envidraçadas e começaram a dar sinais de desgaste:</p>
+        <ul class="lp-list">
+          {sacadasManutencao.map(item => <li><Icon name="check" class="w-5 h-5" />{item}</li>)}
+        </ul>
+        <div class="lp-more-spacer"></div>
+        <a class="lp-btn lp-btn-navy" href={whatsappLink(sacadasMensagens.manutencao)} target="_blank" rel="noopener" data-servico="sacadas-manutencao">
+          <WhatsAppIcon class="w-5 h-5" />Agendar manutenção
+        </a>
+      </article>
+      <article class="lp-more-card">
+        <span class="lp-icon-badge"><Icon name="quiet" class="w-6 h-6" /></span>
+        <h3>Sacadas e janelas acústicas</h3>
+        <p>Quando o barulho da rua atrapalha o descanso ou o trabalho, existem soluções pensadas para reduzir o ruído em sacadas e janelas.</p>
+        <p>Conte onde está o barulho e em que horário ele mais incomoda: isso ajuda a indicar a solução certa.</p>
+        <div class="lp-more-spacer"></div>
+        <a class="lp-btn lp-btn-navy" href={whatsappLink(sacadasMensagens.acustica)} target="_blank" rel="noopener" data-servico="sacadas-acustica">
+          <WhatsAppIcon class="w-5 h-5" />Falar sobre acústica
+        </a>
+      </article>
+    </div>
+  </div>
+</section>

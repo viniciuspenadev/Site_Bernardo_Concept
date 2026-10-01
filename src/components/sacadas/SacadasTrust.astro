@@ -1,0 +1,60 @@
+---
+import Icon from '../Icon.astro';
+import { serviceGroups } from '../../data/content';
+import { site, nap, openingHours, addressLine, telHref } from '../../data/site';
+import { sacadasDepoimentos } from '../../data/sacadas';
+
+// Sem avaliações suficientes para exibir (ver socialProof em site.ts), a confiança
+// vem de dados verificáveis: endereço, horário e CNPJ — os mesmos do rodapé e do
+// Perfil da Empresa no Google. Os depoimentos só aparecem quando forem preenchidos.
+const outrosServicos = serviceGroups.filter(group => group.id !== 'sacadas');
+---
+<section id="empresa" class="lp-section" aria-labelledby="empresa-titulo">
+  <div class="container mx-auto px-6 lg:px-12">
+    <div class="lp-trust-grid">
+      <div>
+        <p class="lp-eyebrow">Quem vai atender você</p>
+        <h2 id="empresa-titulo" class="lp-h2">{site.name}: <em>vidros e esquadrias.</em></h2>
+        <p class="lp-lead mt-6">Trabalhamos com vidros e esquadrias em {nap.city} e atendemos toda a {site.serviceArea}. Além de sacadas, fazemos:</p>
+        <div class="lp-tags">
+          {outrosServicos.map(group => <a class="lp-tag" href="/#servicos">{group.title}</a>)}
+        </div>
+      </div>
+      <dl class="lp-facts">
+        {addressLine && (
+          <div class="lp-fact">
+            <dt><Icon name="pin" class="w-4 h-4" />Endereço</dt>
+            <dd>{nap.mapsUrl ? <a href={nap.mapsUrl} target="_blank" rel="noopener noreferrer">{addressLine}</a> : addressLine}</dd>
+          </div>
+        )}
+        {openingHours.length > 0 && (
+          <div class="lp-fact">
+            <dt><Icon name="clock" class="w-4 h-4" />Horário de atendimento</dt>
+            <dd class="lp-hours">{openingHours.map(faixa => <span>{faixa.days}: {faixa.time}</span>)}</dd>
+          </div>
+        )}
+        <div class="lp-fact">
+          <dt><Icon name="phone" class="w-4 h-4" />WhatsApp e telefone</dt>
+          <dd><a href={telHref}>{site.phoneDisplay}</a></dd>
+        </div>
+        {nap.taxId && (
+          <div class="lp-fact">
+            <dt><Icon name="badge" class="w-4 h-4" />CNPJ</dt>
+            <dd>{nap.taxId}</dd>
+          </div>
+        )}
+      </dl>
+    </div>
+
+    {sacadasDepoimentos.length > 0 && (
+      <div class="lp-quotes">
+        {sacadasDepoimentos.map(item => (
+          <figure class="lp-quote">
+            <blockquote>“{item.texto}”</blockquote>
+            <figcaption>{item.nome}{item.local && ` · ${item.local}`}</figcaption>
+          </figure>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

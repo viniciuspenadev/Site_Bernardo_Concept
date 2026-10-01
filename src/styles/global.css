@@ -87,11 +87,8 @@ button:disabled { cursor: default; opacity: .35; }
 .hero-slide[data-active='true'] .hero-image { transform: scale(1.1); }
 .hero-copy { opacity: 0; transform: translateY(20px); transition: opacity 1s .2s, transform 1s .2s; }
 .hero-slide[data-active='true'] .hero-copy { opacity: 1; transform: translateY(0); }
-.circle-button, .gallery-button { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; transition: background .2s, color .2s; }
-.circle-button { border: 1px solid rgb(255 255 255 / .35); background: rgb(0 0 0 / .1); backdrop-filter: blur(6px); }
+.circle-button { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; border: 1px solid rgb(255 255 255 / .35); background: rgb(0 0 0 / .1); backdrop-filter: blur(6px); transition: background .2s, color .2s; }
 .circle-button:hover { background: white; color: #0a3560; }
-.gallery-button { border: 1px solid #cbd5e1; color: #0a3560; background: white; }
-.gallery-button:not(:disabled):hover { background: #0a3560; color: white; }
 .filter-button { color: #475569; }
 .filter-button[aria-pressed='true'] { color: white; background: #004a8f; box-shadow: 0 4px 12px rgb(0 74 143 / .15); }
 .hide-scrollbar { scrollbar-width: none; }
@@ -206,4 +203,48 @@ textarea.field-control { min-height: 120px; resize: vertical; }
 }
 @media (prefers-reduced-motion: reduce) {
   .wa-float:hover { transform: none; }
+}
+
+/* ---- Carrossel contínuo (home e página de sacadas): CarrosselContinuo.astro ---- */
+/* Largura total da tela, com degradê nas duas pontas: os cartões surgem e somem dentro da
+   página. A largura do degradê (--carrossel-fade) é repetida em carrossel-continuo.ts. */
+.carrossel { --carrossel-fade: clamp(48px, 9vw, 160px); position: relative; }
+.carrossel-viewport { overflow: hidden; overflow: clip; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.carrossel-trilho { display: flex; gap: 1rem; padding-bottom: 2rem; }
+.carrossel[data-modo='continuo'] .carrossel-trilho { will-change: transform; }
+.carrossel[data-modo='continuo'] .carrossel-viewport {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--carrossel-fade), #000 calc(100% - var(--carrossel-fade)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--carrossel-fade), #000 calc(100% - var(--carrossel-fade)), transparent);
+  cursor: grab;
+}
+.carrossel[data-arrastando='true'] .carrossel-viewport { cursor: grabbing; }
+/* Poucos cartões, que cabem na tela: parados e centralizados, sem degradê nem setas. */
+.carrossel[data-modo='parado'] .carrossel-trilho { justify-content: center; padding-inline: 1rem; }
+.carrossel img, .carrossel a { -webkit-user-drag: none; }
+.carrossel-seta {
+  position: absolute; top: calc(50% - 1rem); z-index: 2;
+  display: grid; place-items: center; width: 56px; height: 56px; border-radius: 999px;
+  background: rgb(255 255 255 / .94); color: #0a3560;
+  box-shadow: 0 12px 32px rgb(10 53 96 / .18);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  transform: translateY(-50%);
+  transition: background-color .2s, color .2s, transform .2s;
+}
+.carrossel-seta:hover { background: #0a3560; color: #fff; }
+.carrossel-seta:active { transform: translateY(-50%) scale(.94); }
+.carrossel-seta-anterior { left: clamp(12px, 3vw, 48px); }
+.carrossel-seta-proxima { right: clamp(12px, 3vw, 48px); }
+.carrossel-vazio { padding: 3rem 1rem; text-align: center; color: #64748b; }
+/* Sem JavaScript: rolagem nativa, sem setas nem degradê. */
+.carrossel:not(.carrossel-ativo) .carrossel-viewport { overflow-x: auto; }
+.carrossel:not(.carrossel-ativo) .carrossel-trilho { padding-inline: 1rem; }
+.carrossel:not(.carrossel-ativo) .carrossel-seta { display: none; }
+@media (min-width: 768px) {
+  .carrossel-trilho { gap: 2rem; }
+}
+@media (max-width: 767px) {
+  .carrossel-seta { width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .carrossel-seta:active { transform: translateY(-50%); }
 }

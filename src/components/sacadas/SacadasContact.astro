@@ -1,0 +1,29 @@
+---
+import Icon from '../Icon.astro';
+import LeadForm from '../LeadForm.astro';
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import { site, telHref, whatsappLink } from '../../data/site';
+import { sacadasMensagens, sacadasServicosFormulario } from '../../data/sacadas';
+
+// O formulário é o mesmo da home: envia para a planilha (lead-form.ts) e leva ao
+// /obrigado, onde a conversão de formulário é registrada. A coluna Página da
+// planilha identifica que o lead veio desta landing page.
+---
+<!-- data-sticky-stop: ao chegar aqui, a barra fixa do celular sai de cena para não cobrir o formulário. -->
+<section id="orcamento" class="lp-section lp-contact" aria-labelledby="orcamento-titulo" data-sticky-stop>
+  <div class="container mx-auto px-6 lg:px-12">
+    <p class="lp-eyebrow lp-eyebrow-light lp-eyebrow-center">Orçamento sem compromisso</p>
+    <h2 id="orcamento-titulo" class="lp-h2">Vamos envidraçar <em>a sua sacada?</em></h2>
+    <p class="lp-lead mx-auto mt-6 max-w-xl">Mande fotos e medidas aproximadas pelo WhatsApp ou preencha o formulário. Respondemos em até 1 hora útil.</p>
+    <div class="lp-contact-actions">
+      <a class="lp-btn lp-btn-wa" href={whatsappLink(sacadasMensagens.geral)} target="_blank" rel="noopener" data-servico="sacadas-final">
+        <WhatsAppIcon class="w-5 h-5" />Pedir orçamento no WhatsApp
+      </a>
+      <a class="lp-btn lp-btn-ghost" href={telHref} aria-label={`Ligar para a ${site.name}: ${site.phoneDisplay}`}>
+        <Icon name="phone" class="w-5 h-5" />{site.phoneDisplay}
+      </a>
+    </div>
+    <p class="lp-divider">Ou peça pelo formulário</p>
+    <LeadForm servicos={sacadasServicosFormulario} servicoPadrao="Envidraçamento de sacada" class="mx-auto mt-10 max-w-2xl text-left" />
+  </div>
+</section>

@@ -1,4 +1,5 @@
 import { media } from './media';
+import { sacadasPath } from './sacadas';
 
 // Ordem do carrossel definida pelo cliente: fachada, portões e pele de vidro.
 export const heroSlides = [
@@ -59,6 +60,8 @@ export const serviceGroups = [
     items: ['Envidraçamento de sacadas', 'Manutenção de sacadas', 'Sacadas e janelas acústicas'],
     whatsappMessage: 'Olá! Vim pelo site e gostaria de um orçamento de envidraçamento ou manutenção de sacada.',
     ctaLabel: 'Orçamento de sacadas',
+    // Serviço com página própria: link em Soluções e no rodapé.
+    pagina: { href: sacadasPath, label: 'Conheça o envidraçamento' },
   },
 ] as const;
 

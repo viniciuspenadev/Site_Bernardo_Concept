@@ -1,5 +1,6 @@
 import { site, nap, openingHoursSchema, whatsappDigits } from './site';
 import { serviceGroups } from './content';
+import { sacadasPath, sacadasSeo, sacadasDuvidas } from './sacadas';
 
 // Configure o domínio oficial e a liberação de indexação no build de publicação.
 const configuredUrl = import.meta.env.PUBLIC_SITE_URL?.trim();
@@ -73,3 +74,41 @@ export const structuredData = {
   ],
 };
 
+const sacadasGroup = serviceGroups.find(group => group.id === 'sacadas');
+
+/**
+ * JSON-LD da página de sacadas, somado ao grafo da empresa que o Layout já publica.
+ * O FAQPage usa exatamente as perguntas e respostas visíveis na página.
+ */
+export const sacadasStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      ...(baseUrl ? { '@id': `${baseUrl}${sacadasPath}#servico`, url: `${baseUrl}${sacadasPath}` } : {}),
+      name: 'Envidraçamento de sacadas',
+      serviceType: 'Envidraçamento de sacadas',
+      description: sacadasSeo.description,
+      areaServed: { '@type': 'AdministrativeArea', name: site.serviceArea },
+      provider: baseUrl
+        ? { '@id': `${baseUrl}/#localbusiness` }
+        : { '@type': 'LocalBusiness', name: site.name, telephone: `+${whatsappDigits}` },
+      ...(sacadasGroup ? {
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: sacadasGroup.title,
+          itemListElement: sacadasGroup.items.map(name => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })),
+        },
+      } : {}),
+    },
+    {
+      '@type': 'FAQPage',
+      ...(baseUrl ? { '@id': `${baseUrl}${sacadasPath}#duvidas` } : {}),
+      mainEntity: sacadasDuvidas.map(item => ({
+        '@type': 'Question',
+        name: item.pergunta,
+        acceptedAnswer: { '@type': 'Answer', text: item.resposta },
+      })),
+    },
+  ],
+};

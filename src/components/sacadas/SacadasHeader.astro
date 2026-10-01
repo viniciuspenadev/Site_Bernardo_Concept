@@ -1,0 +1,37 @@
+---
+import Brand from '../Brand.astro';
+import Icon from '../Icon.astro';
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import { site, telHref, whatsappLink } from '../../data/site';
+import { sacadasMensagens } from '../../data/sacadas';
+
+// Cabeçalho enxuto de landing page: só âncoras da própria página, telefone e o CTA.
+// Sem o menu da home, para o visitante do anúncio não sair do caminho da conversão.
+// id e classe iguais aos do Navbar: navigation.ts aplica o fundo sólido na rolagem.
+const anchors = [
+  { label: 'Obras', href: '#obras' },
+  { label: 'Como funciona', href: '#como-funciona' },
+  { label: 'Dúvidas', href: '#duvidas' },
+];
+---
+<header id="site-header" class="site-header fixed top-0 inset-x-0 z-50 transition-all duration-300 border-b border-white/10 py-6 text-white">
+  <div class="container mx-auto px-6 lg:px-12 flex items-center justify-between gap-6">
+    <a href="/" aria-label={`${site.name} — página inicial`} class="shrink-0"><Brand /></a>
+    <nav aria-label="Seções da página" class="lp-header-nav">
+      {anchors.map(link => <a class="nav-link" href={link.href}>{link.label}</a>)}
+    </nav>
+    <div class="flex items-center gap-2">
+      <a class="header-phone" href={telHref} aria-label={`Ligar para a ${site.name}: ${site.phoneDisplay}`}>
+        <Icon name="phone" class="w-5 h-5 lg:w-4 lg:h-4" /><span class="hidden lg:inline">{site.phoneDisplay}</span>
+      </a>
+      <a
+        class="lp-btn lp-btn-wa lp-btn-sm lp-header-cta"
+        href={whatsappLink(sacadasMensagens.geral)}
+        target="_blank"
+        rel="noopener"
+        data-servico="sacadas-cabecalho"
+      ><WhatsAppIcon class="w-4 h-4" />Pedir orçamento</a>
+    </div>
+  </div>
+</header>
+<script src="../../scripts/navigation.ts"></script>
