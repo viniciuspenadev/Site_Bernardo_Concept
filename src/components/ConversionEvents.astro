@@ -55,7 +55,13 @@ const { pageConversion = null } = Astro.props;
       }
     });
 
-    // 3. Conversão de formulário, disparada ao abrir a página de obrigado.
+    // 3. Formulário do Kora (topo da página de sacadas): pedido enviado = conversão de formulário.
+    document.addEventListener('kora:form-submitted', function () {
+      convert(labels.formulario);
+      track('solicitar_cotacao', { origem: 'kora' });
+    });
+
+    // 4. Conversão de formulário, disparada ao abrir a página de obrigado.
     if (pageConversion === 'formulario') {
       convert(labels.formulario);
       track('solicitar_cotacao', {});

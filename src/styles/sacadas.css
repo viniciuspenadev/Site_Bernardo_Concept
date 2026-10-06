@@ -96,6 +96,11 @@
   .lp-hero-grid { grid-template-columns: minmax(0, 1fr) 448px; gap: 4.5rem; align-items: center; min-height: max(100svh, 780px); padding-top: 8.5rem; padding-bottom: 4.5rem; }
 }
 
+/* ---------- Formulário do Kora (KoraForm.astro) ---------- */
+/* O formulário vem numa moldura do Kora, com o próprio cartão; aqui só a largura e os cantos. */
+.lp-kora-form { position: relative; width: 100%; }
+.lp-kora-form iframe { border-radius: 16px; }
+
 /* ---------- Orçamento guiado ---------- */
 .lp-wizard { position: relative; padding: 1.25rem; border-radius: 28px; background: #fff; color: var(--lp-ink); box-shadow: 0 40px 90px -30px rgb(0 0 0 / .6); }
 .lp-wizard-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }

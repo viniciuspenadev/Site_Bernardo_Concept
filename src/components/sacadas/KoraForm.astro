@@ -1,0 +1,22 @@
+---
+import WhatsAppIcon from '../WhatsAppIcon.astro';
+import { whatsappLink } from '../../data/site';
+import { sacadasMensagens } from '../../data/sacadas';
+import { kora } from '../../data/kora';
+
+// Orçamento pelo formulário do Kora (no lugar do QuoteWizard). O carregador f.js põe o
+// formulário dentro deste bloco quando ele abre; até lá — e se não abrir (sem internet, site
+// não autorizado no Kora) — fica o cartão do WhatsApp abaixo. O envio vira conversão de
+// formulário no Google Ads (ConversionEvents ouve o evento kora:form-submitted).
+---
+<div class="lp-kora-form" id="orcamento-guiado" data-kora-form={kora.formSacadas} data-title="Orçamento de envidraçamento de sacada">
+  <div class="lp-wizard">
+    <p class="lp-wizard-kicker">Orçamento sem compromisso</p>
+    <h2 class="lp-wizard-title">Peça seu orçamento</h2>
+    <p class="lp-wizard-sub">Fale direto com a equipe pelo WhatsApp.</p>
+    <a class="lp-btn lp-btn-wa lp-btn-block mt-5" href={whatsappLink(sacadasMensagens.geral)} target="_blank" rel="noopener" data-servico="sacadas-guiado">
+      <WhatsAppIcon class="w-5 h-5" />Pedir orçamento no WhatsApp
+    </a>
+  </div>
+</div>
+<script is:inline async src={`${kora.url}/f.js`}></script>

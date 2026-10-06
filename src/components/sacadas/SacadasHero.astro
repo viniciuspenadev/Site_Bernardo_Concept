@@ -3,6 +3,8 @@ import HeroPhoto from '../HeroPhoto.astro';
 import Icon from '../Icon.astro';
 import WhatsAppIcon from '../WhatsAppIcon.astro';
 import QuoteWizard from './QuoteWizard.astro';
+import KoraForm from './KoraForm.astro';
+import { kora } from '../../data/kora';
 import { site, telHref, whatsappLink } from '../../data/site';
 import { sacadasGarantias, sacadasMensagens } from '../../data/sacadas';
 // Desktop: primeiro quadro do vídeo da sacada (public/media/sacada-scroll-v1.mp4).
@@ -32,6 +34,7 @@ import mobile from '../../assets/tecnoglass/portfolio/sacada-premium-v1.png';
         </a>
       </div>
     </div>
-    <QuoteWizard />
+    <!-- Com o código do formulário do Kora (data/kora.ts), o topo usa o formulário do Kora. -->
+    {kora.formSacadas ? <KoraForm /> : <QuoteWizard />}
   </div>
 </section>
