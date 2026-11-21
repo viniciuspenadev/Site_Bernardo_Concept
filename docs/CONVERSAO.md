@@ -21,7 +21,7 @@ o que precisa ser configurado antes de subir a campanha e como validar cada item
 | NAP e JSON-LD `LocalBusiness` | `src/data/site.ts` (`nap`) e `src/data/seo.ts` |
 | Landing page de sacadas: CTAs, orçamento guiado e barra fixa no celular | `src/pages/envidracamento-de-sacadas.astro` e `src/components/sacadas/` ([LP-SACADAS.md](LP-SACADAS.md)) |
 
-Número oficial usado em todos os pontos: **+55 11 91877-0752** (`wa.me/5511918770752`, `tel:+5511918770752`),
+Número oficial usado em todos os pontos: **+55 11 99787-2634** (`wa.me/5511997872634`, `tel:+5511997872634`),
 definido uma única vez em `src/data/site.ts`.
 
 ### Eventos disparados
@@ -122,7 +122,7 @@ no Google e da consulta pública do CNPJ na Receita Federal:
 | Razão social | Bernardo Tecnoglass Esquadrias de Alumínios Indústria e Comércio Ltda. | Receita |
 | CNPJ | 65.107.139/0001-84 | cliente / Receita |
 | Endereço | Av. Gago Coutinho, 715 - Santa Maria, Santo André - SP, 09070-000 | Perfil no Google |
-| Telefone | (11) 91877-0752 | confere nos dois |
+| Telefone | (11) 99787-2634 | atualizado pelo cliente em 21/11/2026 |
 
 **Dois endereços diferentes.** O cadastro na Receita aponta Av. Giovanni Gronchi, 6195,
 Vila Andrade, São Paulo/SP, CEP 05724-003 — endereço fiscal. O site publica o de

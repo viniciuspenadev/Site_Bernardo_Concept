@@ -34,7 +34,7 @@ assert.deepEqual(faq.mainEntity.map(item => item.name), questions, 'FAQPage deve
 assert.ok(!nodes.some(node => node.aggregateRating || node.review), 'Não incluir avaliações inventadas');
 
 // Conversão: todo link de WhatsApp identifica o ponto de contato; flutuante desligado.
-const whatsappTags = [...html.matchAll(/<a\b[^>]*href="https:\/\/wa\.me\/5511918770752[^"]*"[^>]*>/g)].map(match => match[0]);
+const whatsappTags = [...html.matchAll(/<a\b[^>]*href="https:\/\/wa\.me\/5511997872634[^"]*"[^>]*>/g)].map(match => match[0]);
 assert.ok(whatsappTags.length >= 10, `Links de WhatsApp: ${whatsappTags.length}`);
 for (const tag of whatsappTags) assert.match(tag, /data-servico="[a-z-]+"/, `Link sem data-servico: ${tag.slice(0, 120)}`);
 assert.ok(!html.includes('class="wa-float"'), 'Botão flutuante substituído pela barra fixa');
@@ -52,7 +52,7 @@ for (const obra of obras) {
   const grande = obra.match(/href="([^"]+)"/)?.[1];
   assert.ok(grande && existsSync(join(directory, grande)), `Foto grande ausente na build: ${grande}`);
   assert.match(obra, /<img[^>]*alt="[^"]{10,}"/, 'Toda foto de obra precisa de alt descritivo');
-  assert.match(obra, /data-whatsapp="https:\/\/wa\.me\/5511918770752\?text=[^"]+"/, 'Toda obra leva a mensagem própria do WhatsApp');
+  assert.match(obra, /data-whatsapp="https:\/\/wa\.me\/5511997872634\?text=[^"]+"/, 'Toda obra leva a mensagem própria do WhatsApp');
 }
 assert.ok(html.includes('data-lightbox'), 'Galeria ampliada presente');
 assert.ok(html.includes('data-carrossel') && html.includes('data-carrossel-anterior') && html.includes('data-carrossel-proxima'), 'Carrossel contínuo com as setas das pontas');

@@ -1,13 +1,13 @@
 // Serviços e fotografias informados pelo cliente em 14/09/2026.
-// WhatsApp e telefone oficiais informados em 17/09/2026.
+// WhatsApp e telefone atualizados pelo cliente em 21/11/2026.
 export const site = {
   name: 'Bernardo Tecnoglass',
   title: 'Esquadrias e Vidros na Grande São Paulo | Bernardo Tecnoglass',
   description: 'Bernardo Tecnoglass na Grande São Paulo: esquadrias, portões, pele de vidro, box para banheiro, guarda-corpo e envidraçamento e manutenção de sacadas.',
   serviceArea: 'Grande São Paulo',
   // Número único de atendimento: usado no WhatsApp, no telefone do cabeçalho e no rodapé.
-  whatsapp: '5511918770752',
-  phoneDisplay: '(11) 91877-0752',
+  whatsapp: '5511997872634',
+  phoneDisplay: '(11) 99787-2634',
   email: '',
   socialLinks: [] as { label: string; href: string }[],
 };
